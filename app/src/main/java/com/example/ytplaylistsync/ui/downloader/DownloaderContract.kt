@@ -1,6 +1,6 @@
-package com.example.ytplaylistsync.ui.home
+package com.example.ytplaylistsync.ui.downloader
 
-interface PlaylistContract {
+interface DownloaderContract {
     interface View {
         // method to display progress bar
         // when next random course details

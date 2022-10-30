@@ -7,7 +7,13 @@
 
     <fragment
         android:id="@+id/navigation_home"
-        android:name="com.example.ytplaylistsync.ui.home.PlaylistsFragment"
+        android:name="com.example.ytplaylistsync.ui.playlist.PlaylistsFragment"
+        android:label="@string/title_home"
+        tools:layout="@layout/fragment_playlist" />
+
+    <fragment
+        android:id="@+id/navigation_downloader"
+        android:name="com.example.ytplaylistsync.ui.downloader.DownloaderFragment"
         android:label="@string/title_home"
         tools:layout="@layout/fragment_playlist" />
 

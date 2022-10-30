@@ -1,10 +1,10 @@
-package com.example.ytplaylistsync.ui.home
+package com.example.ytplaylistsync.ui.downloader
 
 import android.os.Handler
 import java.util.*
 
 
-class PlaylistModel : PlaylistContract.Model {
+class DownloaderModel : DownloaderContract.Model {
     // array list of strings from which
     // random strings will be selected
     // to display in the activity
@@ -25,7 +25,7 @@ class PlaylistModel : PlaylistContract.Model {
     // user clicks on the button
     // and it will take a delay of
     // 1200 milliseconds to display next course detail
-    override fun getNextCourse(onFinishedListener: PlaylistContract.Model.OnFinishedListener?) {
+    override fun getNextCourse(onFinishedListener: DownloaderContract.Model.OnFinishedListener?) {
         Handler().postDelayed({ onFinishedListener!!.onFinished(getRandomString) }, 1200)
     }
 

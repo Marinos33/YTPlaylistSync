@@ -1,9 +1,9 @@
-package com.example.ytplaylistsync.ui.home
+package com.example.ytplaylistsync.ui.downloader
 
-class PlaylistPresenter(
-    private var mainView: PlaylistContract.View?,
-    private val model: PlaylistContract.Model) : PlaylistContract.Presenter,
-    PlaylistContract.Model.OnFinishedListener {
+class DownloaderPresenter(
+    private var mainView: DownloaderContract.View?,
+    private val model: DownloaderContract.Model) : DownloaderContract.Presenter,
+    DownloaderContract.Model.OnFinishedListener {
 
     // operations to be performed
     // on button click
