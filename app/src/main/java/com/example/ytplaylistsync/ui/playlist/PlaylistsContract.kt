@@ -1,6 +1,6 @@
 package com.example.ytplaylistsync.ui.playlist
 
-interface PlaylistContract {
+interface PlaylistsContract {
     interface View {
     }
 

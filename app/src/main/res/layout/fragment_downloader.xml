@@ -6,7 +6,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#168BC34A"
-    tools:context=".ui.playlist.DownloaderFragment">
+    tools:context=".ui.downloader.DownloaderFragment">
 
     <!-- TextView to display heading of the activity -->
     <TextView

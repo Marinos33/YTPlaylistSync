@@ -7,42 +7,46 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import androidx.appcompat.widget.SearchView
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
+import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
+import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
+import com.example.ytplaylistsync.domain.entities.PlaylistEntity
+import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
+import com.example.ytplaylistsync.ui.playlist.recyclerView.MockDataProvider
 
 
-class PlaylistsFragment : Fragment(), PlaylistContract.View {
-    // creating object of TextView class
-    private var textView: TextView? = null
-
-    // creating object of Button class
-    private var button: Button? = null
-
-    // creating object of ProgressBar class
-    private var progressBar: ProgressBar? = null
+class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     // creating object of Presenter interface in Contract
-    var presenter: PlaylistPresenter? = null
+    var presenter: PlaylistsPresenter? = null
+
+    private var _binding: FragmentPlaylistsBinding? = null
+
+    private val binding get() = _binding!!
+
+    private var adapter: PlaylistsAdapter? = null
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
 
-        val view = inflater.inflate(R.layout.fragment_playlist, container, false)
-        // assigning ID of the TextView
-        textView = view.findViewById(R.id.textView)
 
-        // assigning ID of the Button
-        button = view.findViewById(R.id.button)
-
-        // assigning ID of the ProgressBar
-        progressBar = view.findViewById(R.id.progressBar)
+        _binding = FragmentPlaylistsBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         // instantiating object of Presenter Interface
-        presenter = PlaylistPresenter(this, PlaylistModel())
+        presenter = PlaylistsPresenter(this, PlaylistsModel())
 
-        return view
+        setUpRecyclerView()
+        setUpSearchView()
+
+        return root
     }
 
     override fun onResume() {
@@ -52,5 +56,40 @@ class PlaylistsFragment : Fragment(), PlaylistContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter!!.onDestroy()
+    }
+
+    private fun setUpSearchView() {
+        binding?.searchBar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                adapter?.getFilter()?.filter(query)
+                return true
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter?.getFilter()?.filter(newText);
+                return true
+            }
+
+        })
+    }
+
+    private fun setUpRecyclerView() {
+        //attach layout manager
+        binding?.playlistsList?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+
+        //add item decoration for divider
+        val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
+        ContextCompat.getDrawable(requireContext(), R.drawable.line_divider)?.let { itemDecorator.setDrawable(it) }
+        binding?.playlistsList?.addItemDecoration(itemDecorator)
+
+        //create a copy of city list
+        val cityList = MockDataProvider().getCityDataList()
+        val cityListCopy = ArrayList<PlaylistEntity>().apply {
+            addAll(cityList)
+        }
+
+        //attach adapter to list
+        adapter = PlaylistsAdapter(cityListCopy)
+        binding?.playlistsList?.adapter = adapter
     }
 }
