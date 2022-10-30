@@ -1,4 +1,4 @@
-package com.example.ytplaylistsync.ui.dashboard
+package com.example.ytplaylistsync.ui.example.dashboard
 
 import android.Manifest
 import android.content.pm.PackageManager
