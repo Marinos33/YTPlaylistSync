@@ -2,6 +2,7 @@ package com.example.ytplaylistsync.ui.playlist
 
 interface PlaylistsContract {
     interface View {
+
     }
 
     interface Model {
@@ -18,5 +19,7 @@ interface PlaylistsContract {
         // method to destroy
         // lifecycle of MainActivity
         fun onDestroy()
+
+        fun onRefresh()
     }
 }

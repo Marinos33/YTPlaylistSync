@@ -18,6 +18,9 @@ import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.domain.entities.PlaylistEntity
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
 import com.example.ytplaylistsync.ui.playlist.recyclerView.MockDataProvider
+import me.zhanghai.android.fastscroll.FastScrollerBuilder
+import java.util.*
+import kotlin.collections.ArrayList
 
 
 class PlaylistsFragment : Fragment(), PlaylistsContract.View {
@@ -83,7 +86,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         binding?.playlistsList?.addItemDecoration(itemDecorator)
 
         //create a copy of city list
-        val cityList = MockDataProvider().getCityDataList()
+        val cityList = MockDataProvider().getPlaylistDataList()
         val cityListCopy = ArrayList<PlaylistEntity>().apply {
             addAll(cityList)
         }
@@ -91,5 +94,21 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         //attach adapter to list
         adapter = PlaylistsAdapter(cityListCopy)
         binding?.playlistsList?.adapter = adapter
+
+        binding?.playlistsList?.let { FastScrollerBuilder(it).useMd2Style().build() };
+
+        binding.swipeRefresh.setOnRefreshListener {
+
+            //wait 5 seconds
+            Timer().schedule(object : TimerTask() {
+                override fun run() {
+                    binding.swipeRefresh.isRefreshing = false
+
+                    // on below line we are notifying adapter
+                    // that data has changed in recycler view.
+                    //adapter?.notifyDataSetChanged()
+                }
+            }, 5000)
+        }
     }
 }

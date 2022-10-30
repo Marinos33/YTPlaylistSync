@@ -11,13 +11,13 @@ import com.example.ytplaylistsync.domain.entities.PlaylistEntity
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlaylistsAdapter(private var cityDataList: ArrayList<PlaylistEntity>) :
+class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
     RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     // Create a copy of localityList that is not a clone
     // (so that any changes in localityList aren't reflected in this list)
-    val initialCityDataList = ArrayList<PlaylistEntity>().apply {
-        cityDataList?.let { addAll(it) }
+    val initialPlaylistDataList = ArrayList<PlaylistEntity>().apply {
+        playlists?.let { addAll(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
@@ -28,25 +28,25 @@ class PlaylistsAdapter(private var cityDataList: ArrayList<PlaylistEntity>) :
     }
 
     override fun onBindViewHolder(holder: PlaylistsViewHolder, position: Int) {
-        holder.bind(cityDataList[position])
+        holder.bind(playlists[position])
     }
 
     override fun getItemCount(): Int {
-        return cityDataList.size
+        return playlists.size
     }
 
     fun getFilter(): Filter {
-        return cityFilter
+        return playlistFilter
     }
 
-    private val cityFilter = object : Filter() {
+    private val playlistFilter = object : Filter() {
         override fun performFiltering(constraint: CharSequence?): FilterResults {
             val filteredList: ArrayList<PlaylistEntity> = ArrayList()
             if (constraint == null || constraint.isEmpty()) {
-                initialCityDataList.let { filteredList.addAll(it) }
+                initialPlaylistDataList.let { filteredList.addAll(it) }
             } else {
                 val query = constraint.toString().trim().toLowerCase()
-                initialCityDataList.forEach {
+                initialPlaylistDataList.forEach {
                     if (it.cityName.toLowerCase(Locale.ROOT).contains(query)) {
                         filteredList.add(it)
                     }
@@ -59,8 +59,8 @@ class PlaylistsAdapter(private var cityDataList: ArrayList<PlaylistEntity>) :
 
         override fun publishResults(constraint: CharSequence?, results: FilterResults?) {
             if (results?.values is ArrayList<*>) {
-                cityDataList.clear()
-                cityDataList.addAll(results.values as ArrayList<PlaylistEntity>)
+                playlists.clear()
+                playlists.addAll(results.values as ArrayList<PlaylistEntity>)
                 notifyDataSetChanged()
             }
         }
