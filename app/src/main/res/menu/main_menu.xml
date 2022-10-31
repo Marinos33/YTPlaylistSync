@@ -6,7 +6,7 @@
 
     <!-- Settings, should always be in the overflow -->
     <item android:id="@+id/action_settings"
-        android:title="settings"
+        android:title="@string/Settings"
         app:showAsAction="never"/>
 
 </menu>

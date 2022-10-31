@@ -47,7 +47,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
             } else {
                 val query = constraint.toString().trim().toLowerCase()
                 initialPlaylistDataList.forEach {
-                    if (it.cityName.toLowerCase(Locale.ROOT).contains(query)) {
+                    if (it.name.lowercase(Locale.ROOT).contains(query)) {
                         filteredList.add(it)
                     }
                 }

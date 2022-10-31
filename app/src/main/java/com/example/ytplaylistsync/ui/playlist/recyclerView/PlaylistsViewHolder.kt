@@ -8,10 +8,12 @@ import com.example.ytplaylistsync.domain.entities.PlaylistEntity
 
 
 class PlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-    private val playlistName: TextView = itemView.findViewById(R.id.city_name)
-    private val playlistCode: TextView = itemView.findViewById(R.id.city_code)
-    fun bind(cityDataObject: PlaylistEntity) {
-        playlistName.text = cityDataObject.cityName
-        playlistCode.text = cityDataObject.cityCode
+    private val name: TextView = itemView.findViewById(R.id.playlist_name)
+    private val author: TextView = itemView.findViewById(R.id.playlist_author)
+    private val lastUpdated: TextView = itemView.findViewById(R.id.playlist_last_updated)
+    fun bind(playlistDataObject: PlaylistEntity) {
+        name.text = playlistDataObject.name
+        author.text = playlistDataObject.author
+        lastUpdated.text = playlistDataObject.lastUpdated
     }
 }
