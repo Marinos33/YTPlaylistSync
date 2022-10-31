@@ -15,6 +15,7 @@
         <item name="autoCompleteTextViewStyle">@style/SearchAutoCompleteTextView</item>
         <item name="android:itemBackground">@color/background</item>
         <item name="android:textColor">@color/textColor</item>
+        <item name="colorAccent">@color/colorPrimary</item>
     </style>
 
     <style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">
