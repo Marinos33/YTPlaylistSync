@@ -8,12 +8,12 @@
     <fragment
         android:id="@+id/navigation_playlists"
         android:name="com.example.ytplaylistsync.ui.playlist.PlaylistsFragment"
-        android:label="@string/title_home"
+        android:label="@string/Playlists"
         tools:layout="@layout/fragment_playlists" />
 
     <fragment
         android:id="@+id/navigation_downloader"
         android:name="com.example.ytplaylistsync.ui.downloader.DownloaderFragment"
-        android:label="@string/title_home"
+        android:label="@string/Downloader"
         tools:layout="@layout/fragment_downloader" />
 </navigation>

@@ -7,12 +7,14 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.core.view.size
 import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import com.google.android.material.navigation.NavigationBarView
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
@@ -45,6 +47,8 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_playlists, R.id.navigation_downloader))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+        navView.labelVisibilityMode = NavigationBarView.LABEL_VISIBILITY_UNLABELED
+        navView.itemIconSize = 80
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
