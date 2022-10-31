@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/background"
     android:orientation="horizontal">
 
     <ImageView
@@ -12,6 +13,7 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:contentDescription="@string/todo"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_baseline_music_note_24" />
 
     <LinearLayout
@@ -24,7 +26,7 @@
             android:id="@+id/playlist_last_updated"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey_text"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
             tools:text="New Delhi" />
@@ -33,7 +35,7 @@
             android:id="@+id/playlist_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey_text"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="italic"
             tools:text="New Delhi" />
@@ -42,7 +44,7 @@
             android:id="@+id/playlist_author"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textColor="@color/grey_text"
+            android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
             tools:text="New Delhi" />
 
@@ -55,6 +57,7 @@
         android:layout_weight="1"
         android:contentDescription="@string/todo"
         android:scaleType="fitCenter"
+        android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_baseline_refresh_24"
         tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
 

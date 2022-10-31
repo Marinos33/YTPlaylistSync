@@ -5,7 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="#168BC34A"
+    android:background="@color/background"
     tools:context=".ui.playlist.PlaylistsFragment">
 
     <androidx.appcompat.widget.SearchView
@@ -16,7 +16,9 @@
         android:background="@color/surface"
         app:defaultQueryHint="enter playlist's name or url"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:searchHintIcon="@drawable/ic_baseline_search_24"
+        app:searchIcon="@drawable/ic_baseline_search_24" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/swipe_refresh"
@@ -40,19 +42,20 @@
 
     <ImageButton
         android:id="@+id/imageButton2"
-        android:layout_width="49dp"
-        android:layout_height="43dp"
+        android:layout_width="37dp"
+        android:layout_height="33dp"
         android:layout_marginStart="1dp"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="10dp"
+        android:background="@drawable/circle_shape_surface"
         android:contentDescription="@string/todo"
-        android:background="@android:color/transparent"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toEndOf="@+id/search_bar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
-        app:tint="@color/colorPrimary" />
+        app:tint="@color/white"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
