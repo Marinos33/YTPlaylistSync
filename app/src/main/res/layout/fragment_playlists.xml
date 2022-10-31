@@ -13,6 +13,8 @@
         android:layout_width="341dp"
         android:layout_height="43dp"
         android:layout_margin="@dimen/dimen_12dp"
+        android:background="@color/surface"
+        app:defaultQueryHint="enter playlist's name or url"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -44,11 +46,13 @@
         android:layout_marginTop="12dp"
         android:layout_marginEnd="10dp"
         android:contentDescription="@string/todo"
+        android:background="@android:color/transparent"
         android:minHeight="48dp"
         android:src="@drawable/ic_baseline_add_24"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@+id/search_bar"
         app:layout_constraintTop_toTopOf="parent"
-        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck"
+        app:tint="@color/colorPrimary" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
