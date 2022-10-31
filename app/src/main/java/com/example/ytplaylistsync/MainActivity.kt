@@ -3,6 +3,8 @@ package com.example.ytplaylistsync
 import android.content.ContentValues.TAG
 import android.os.Bundle
 import android.util.Log
+import android.view.Menu
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.navigation.findNavController
@@ -19,7 +21,6 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
-import kotlin.concurrent.thread
 
 
 class MainActivity : AppCompatActivity() {
@@ -44,6 +45,21 @@ class MainActivity : AppCompatActivity() {
                 R.id.navigation_playlists, R.id.navigation_downloader))
         setupActionBarWithNavController(navController, appBarConfiguration)
         navView.setupWithNavController(navController)
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu?): Boolean {
+        menuInflater.inflate(R.menu.main_menu, menu)
+        return true
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when (item.itemId) {
+            R.id.action_settings -> {
+                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
+                return true
+            }
+        }
+        return(super.onOptionsItemSelected(item));
     }
 
     private fun initYoutubeDL() {

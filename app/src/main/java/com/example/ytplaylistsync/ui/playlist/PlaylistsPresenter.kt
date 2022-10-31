@@ -10,6 +10,10 @@ class PlaylistsPresenter(
         mainView = null
     }
 
+    override fun onRefresh() {
+        TODO("Not yet implemented")
+    }
+
     override fun onFinished(string: String?) {
     }
 

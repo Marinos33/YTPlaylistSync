@@ -10,10 +10,9 @@
 
     <androidx.appcompat.widget.SearchView
         android:id="@+id/search_bar"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
+        android:layout_width="341dp"
+        android:layout_height="43dp"
         android:layout_margin="@dimen/dimen_12dp"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
@@ -36,5 +35,20 @@
             tools:listitem="@layout/playlist_item" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <ImageButton
+        android:id="@+id/imageButton2"
+        android:layout_width="49dp"
+        android:layout_height="43dp"
+        android:layout_marginStart="1dp"
+        android:layout_marginTop="12dp"
+        android:layout_marginEnd="10dp"
+        android:contentDescription="@string/todo"
+        android:minHeight="48dp"
+        android:src="@drawable/ic_notifications_black_24dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/search_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="SpeakableTextPresentCheck,TouchTargetSizeCheck" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

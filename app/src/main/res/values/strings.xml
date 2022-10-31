@@ -7,4 +7,5 @@
     <string name="heading">MVP Architecture Pattern</string>
     <string name="subHeading">GeeksforGeeks Computer Science Online Courses</string>
     <string name="description">Course Description</string>
+    <string name="todo">TODO</string>
 </resources>
