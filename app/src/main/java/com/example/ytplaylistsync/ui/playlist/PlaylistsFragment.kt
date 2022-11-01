@@ -4,9 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.ProgressBar
-import android.widget.TextView
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -15,9 +12,8 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
-import com.example.ytplaylistsync.domain.entities.PlaylistEntity
+import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
-import com.example.ytplaylistsync.ui.playlist.recyclerView.MockDataProvider
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.util.*
 import kotlin.collections.ArrayList
@@ -86,13 +82,15 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         binding?.playlistsList?.addItemDecoration(itemDecorator)
 
         //create a copy of city list
-        val cityList = MockDataProvider().getPlaylistDataList()
-        val cityListCopy = ArrayList<PlaylistEntity>().apply {
-            addAll(cityList)
+        val playlists = presenter?.fetchPlaylists()
+        val playlistsCopy = ArrayList<PlaylistEntity>().apply {
+            if (playlists != null) {
+                addAll(playlists)
+            }
         }
 
         //attach adapter to list
-        adapter = PlaylistsAdapter(cityListCopy)
+        adapter = PlaylistsAdapter(playlistsCopy)
         binding?.playlistsList?.adapter = adapter
 
         binding?.playlistsList?.let { FastScrollerBuilder(it).useMd2Style().build() };

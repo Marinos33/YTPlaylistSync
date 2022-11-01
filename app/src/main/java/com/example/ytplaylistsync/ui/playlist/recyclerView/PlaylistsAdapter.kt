@@ -1,13 +1,11 @@
 package com.example.ytplaylistsync.ui.playlist.recyclerView
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.Filter
-import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
-import com.example.ytplaylistsync.domain.entities.PlaylistEntity
+import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import java.util.*
 import kotlin.collections.ArrayList
 
@@ -45,9 +43,9 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
             if (constraint == null || constraint.isEmpty()) {
                 initialPlaylistDataList.let { filteredList.addAll(it) }
             } else {
-                val query = constraint.toString().trim().toLowerCase()
+                val query = constraint.toString().trim().lowercase(Locale.ROOT)
                 initialPlaylistDataList.forEach {
-                    if (it.name.lowercase(Locale.ROOT).contains(query)) {
+                    if (it.name?.lowercase(Locale.ROOT)?.contains(query) == true) {
                         filteredList.add(it)
                     }
                 }

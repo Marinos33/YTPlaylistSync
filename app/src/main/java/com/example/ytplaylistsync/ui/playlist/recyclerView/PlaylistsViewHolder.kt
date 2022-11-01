@@ -4,7 +4,7 @@ import android.view.View
 import android.widget.TextView
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
-import com.example.ytplaylistsync.domain.entities.PlaylistEntity
+import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 
 
 class PlaylistsViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {

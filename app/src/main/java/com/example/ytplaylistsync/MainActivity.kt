@@ -12,7 +12,13 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.room.Database
+import androidx.room.Room
+import androidx.room.RoomDatabase
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
+import com.example.ytplaylistsync.persistence.AppDatabase
+import com.example.ytplaylistsync.persistence.dao.PlaylistDao
+import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.yausername.ffmpeg.FFmpeg
@@ -98,5 +104,4 @@ class MainActivity : AppCompatActivity() {
             }
         compositeDisposable.add(disposable)
     }
-
 }
