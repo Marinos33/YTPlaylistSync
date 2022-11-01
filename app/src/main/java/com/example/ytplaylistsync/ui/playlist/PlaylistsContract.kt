@@ -15,7 +15,7 @@ interface PlaylistsContract {
             fun onFinished(string: String?)
         }
 
-        fun fetchPlaylists(onFinishedListener: OnFinishedListener)
+        suspend fun fetchPlaylists(onFinishedListener: OnFinishedListener): List<PlaylistEntity>?
     }
 
     interface Presenter {
@@ -23,8 +23,6 @@ interface PlaylistsContract {
         // method to destroy
         // lifecycle of MainActivity
         fun onDestroy()
-
-        fun onRefresh()
 
         fun fetchPlaylists(): List<PlaylistEntity>
     }

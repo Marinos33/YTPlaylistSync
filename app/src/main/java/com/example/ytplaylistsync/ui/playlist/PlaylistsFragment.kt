@@ -13,12 +13,15 @@ import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
+import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
+import dagger.hilt.android.AndroidEntryPoint
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import java.util.*
+import javax.inject.Inject
 import kotlin.collections.ArrayList
 
-
+@AndroidEntryPoint
 class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     // creating object of Presenter interface in Contract
@@ -30,6 +33,9 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     private var adapter: PlaylistsAdapter? = null
 
+    @Inject
+    lateinit var repository: PlaylistRepository
+
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
@@ -40,7 +46,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         val root: View = binding.root
 
         // instantiating object of Presenter Interface
-        presenter = PlaylistsPresenter(this, PlaylistsModel())
+        presenter = PlaylistsPresenter(this, PlaylistsModel(repository))
 
         setUpRecyclerView()
         setUpSearchView()
@@ -83,6 +89,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         //create a copy of city list
         val playlists = presenter?.fetchPlaylists()
+        //val playlists = emptyList<PlaylistEntity>()
         val playlistsCopy = ArrayList<PlaylistEntity>().apply {
             if (playlists != null) {
                 addAll(playlists)
@@ -96,17 +103,17 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         binding?.playlistsList?.let { FastScrollerBuilder(it).useMd2Style().build() };
 
         binding.swipeRefresh.setOnRefreshListener {
-
-            //wait 5 seconds
-            Timer().schedule(object : TimerTask() {
-                override fun run() {
-                    binding.swipeRefresh.isRefreshing = false
-
-                    // on below line we are notifying adapter
-                    // that data has changed in recycler view.
-                    //adapter?.notifyDataSetChanged()
+            val playlists = presenter?.fetchPlaylists()
+            val playlistsCopy = ArrayList<PlaylistEntity>().apply {
+                if (playlists != null) {
+                    addAll(playlists)
                 }
-            }, 5000)
+            }
+
+            binding?.playlistsList?.adapter = PlaylistsAdapter(playlistsCopy)
+            adapter?.notifyDataSetChanged()
+
+            binding.swipeRefresh.isRefreshing = false
         }
     }
 }
