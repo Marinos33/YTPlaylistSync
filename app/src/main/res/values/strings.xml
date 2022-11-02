@@ -3,7 +3,10 @@
     <string name="Settings">Settings</string>
     <string name="Playlists">Playlists</string>
     <string name="Downloader">Downloader</string>
-
+    <string name="add_dialog_title">Add a playlist</string>
+    <string name="add_dialog_message">Enter the playlist URL</string>
+    <string name="add_dialog_positive">Add</string>
+    <string name="add_dialog_negative">Cancel</string>
 
 
     <!---to delete -->

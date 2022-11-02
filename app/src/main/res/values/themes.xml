@@ -16,6 +16,10 @@
         <item name="android:itemBackground">@color/background</item>
         <item name="android:textColor">@color/textColor</item>
         <item name="colorAccent">@color/colorPrimary</item>
+        <item name="colorBackgroundFloating">@color/background</item>
+        <item name="md_corner_radius">@dimen/text_size_medium</item>
+        <item name="md_color_title">@color/textColor</item>
+        <item name="md_color_content">@color/textColor</item>
     </style>
 
     <style name="SearchAutoCompleteTextView" parent="Widget.AppCompat.Light.AutoCompleteTextView">

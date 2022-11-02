@@ -4,12 +4,16 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.afollestad.materialdialogs.MaterialDialog
+import com.afollestad.materialdialogs.customview.customView
+import com.afollestad.materialdialogs.customview.getCustomView
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
@@ -17,7 +21,6 @@ import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
 import dagger.hilt.android.AndroidEntryPoint
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
-import java.util.*
 import javax.inject.Inject
 import kotlin.collections.ArrayList
 
@@ -25,7 +28,7 @@ import kotlin.collections.ArrayList
 class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     // creating object of Presenter interface in Contract
-    var presenter: PlaylistsPresenter? = null
+    private var presenter: PlaylistsPresenter? = null
 
     private var _binding: FragmentPlaylistsBinding? = null
 
@@ -38,7 +41,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
 
 
@@ -48,6 +51,35 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         // instantiating object of Presenter Interface
         presenter = PlaylistsPresenter(this, PlaylistsModel(repository))
 
+        val dialog = MaterialDialog(requireContext())
+            .title(R.string.add_dialog_title)
+            .message(R.string.add_dialog_message){
+                html ()
+            }
+            .positiveButton(R.string.add_dialog_positive) {
+                dialog ->
+                //retrieve input from dialog
+                presenter?.addPlaylist("null")
+                refreshPlaylists()
+            }
+            .negativeButton(R.string.add_dialog_negative)
+
+        binding.addButton.setOnClickListener {
+            MaterialDialog(requireContext()).show {
+                input{
+                       /* https://github.com/afollestad/material-dialogs/blob/main/documentation/INPUT.md*/
+                }
+                title(R.string.add_dialog_title)
+                message(R.string.add_dialog_message)
+                positiveButton(R.string.add_dialog_positive) {
+                   dialog ->
+                   //retrieve input from dialog
+                   presenter?.addPlaylist("null")
+                   refreshPlaylists()
+                }
+                negativeButton(R.string.add_dialog_negative)
+            }
+        }
         setUpRecyclerView()
         setUpSearchView()
 
@@ -64,14 +96,14 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
     }
 
     private fun setUpSearchView() {
-        binding?.searchBar?.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
+        binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter?.getFilter()?.filter(query)
                 return true
             }
 
             override fun onQueryTextChange(newText: String?): Boolean {
-                adapter?.getFilter()?.filter(newText);
+                adapter?.getFilter()?.filter(newText)
                 return true
             }
 
@@ -80,12 +112,12 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     private fun setUpRecyclerView() {
         //attach layout manager
-        binding?.playlistsList?.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
+        binding.playlistsList.layoutManager = LinearLayoutManager(requireContext(), RecyclerView.VERTICAL, false)
 
         //add item decoration for divider
         val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         ContextCompat.getDrawable(requireContext(), R.drawable.line_divider)?.let { itemDecorator.setDrawable(it) }
-        binding?.playlistsList?.addItemDecoration(itemDecorator)
+        binding.playlistsList.addItemDecoration(itemDecorator)
 
         //create a copy of city list
         val playlists = presenter?.fetchPlaylists()
@@ -98,22 +130,26 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         //attach adapter to list
         adapter = PlaylistsAdapter(playlistsCopy)
-        binding?.playlistsList?.adapter = adapter
+        binding.playlistsList.adapter = adapter
 
-        binding?.playlistsList?.let { FastScrollerBuilder(it).useMd2Style().build() };
+        binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
 
         binding.swipeRefresh.setOnRefreshListener {
-            val playlists = presenter?.fetchPlaylists()
-            val playlistsCopy = ArrayList<PlaylistEntity>().apply {
-                if (playlists != null) {
-                    addAll(playlists)
-                }
-            }
-
-            binding?.playlistsList?.adapter = PlaylistsAdapter(playlistsCopy)
-            adapter?.notifyDataSetChanged()
+            refreshPlaylists()
 
             binding.swipeRefresh.isRefreshing = false
         }
+    }
+
+    override fun refreshPlaylists() {
+        val playlists = presenter?.fetchPlaylists()
+        val playlistsCopy = ArrayList<PlaylistEntity>().apply {
+            if (playlists != null) {
+                addAll(playlists)
+            }
+        }
+
+        binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy)
+        adapter?.notifyDataSetChanged()
     }
 }

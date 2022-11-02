@@ -15,10 +15,10 @@ import com.google.gson.annotations.SerializedName
 
 @Entity(tableName = "playlist", indices = [Index(value = ["playlist_url"], unique = true)])
 data class PlaylistEntity(
-    @PrimaryKey(autoGenerate = true) val id: Int,
-    @ColumnInfo(name = "playlist_name") val name: String?,
-    @ColumnInfo(name = "playlist_author") val author: String?,
-    @ColumnInfo(name = "playlist_last_updated") val lastUpdated: String?,
-    @ColumnInfo(name = "playlist_url") val url: String?,
+    @PrimaryKey(autoGenerate = true) val id: Int?,
+    @ColumnInfo(name = "playlist_name") val name: String,
+    @ColumnInfo(name = "playlist_author") val author: String,
+    @ColumnInfo(name = "playlist_last_updated") val lastUpdated: String,
+    @ColumnInfo(name = "playlist_url") val url: String,
     @ColumnInfo(name = "playlist_thumbnail") val thumbnail: String?
     )

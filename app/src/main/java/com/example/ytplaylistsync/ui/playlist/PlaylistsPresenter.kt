@@ -21,6 +21,13 @@ class PlaylistsPresenter(
         return result!!
     }
 
+    override fun addPlaylist(url: String) {
+        val result = runBlocking {
+            //model.addPlaylist(playlist)
+        }
+    }
+
+
     override fun onFinished(string: String?) {
     }
 

@@ -19,4 +19,15 @@ class PlaylistsModel constructor(
         repository.insert(playlisttoadd)*/
             return repository.getAll()
     }
+
+    override suspend fun addPlaylist(
+        name: String,
+        author: String,
+        lastUpdated: String,
+        url: String,
+        thumbnail: String
+    ) {
+        val playlist = PlaylistEntity(null, name, author, lastUpdated, url, thumbnail)
+        return repository.insert(playlist)
+    }
 }
