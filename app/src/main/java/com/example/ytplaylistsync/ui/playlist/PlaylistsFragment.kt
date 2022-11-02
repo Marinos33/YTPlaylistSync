@@ -5,6 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
+import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
@@ -14,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
 import com.afollestad.materialdialogs.customview.customView
 import com.afollestad.materialdialogs.customview.getCustomView
+import com.afollestad.materialdialogs.input.input
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
@@ -53,33 +55,18 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         val dialog = MaterialDialog(requireContext())
             .title(R.string.add_dialog_title)
-            .message(R.string.add_dialog_message){
-                html ()
-            }
-            .positiveButton(R.string.add_dialog_positive) {
-                dialog ->
-                //retrieve input from dialog
-                presenter?.addPlaylist("null")
-                refreshPlaylists()
-            }
+            .positiveButton(R.string.add_dialog_positive)
             .negativeButton(R.string.add_dialog_negative)
+            .input (hintRes = R.string.add_dialog_hint) { dialog, text ->
+                    Toast.makeText(requireContext(), "Added $text", Toast.LENGTH_SHORT).show()
+                    /*presenter?.addPlaylist("null")
+                    refreshPlaylists()*/
+            }
 
         binding.addButton.setOnClickListener {
-            MaterialDialog(requireContext()).show {
-                input{
-                       /* https://github.com/afollestad/material-dialogs/blob/main/documentation/INPUT.md*/
-                }
-                title(R.string.add_dialog_title)
-                message(R.string.add_dialog_message)
-                positiveButton(R.string.add_dialog_positive) {
-                   dialog ->
-                   //retrieve input from dialog
-                   presenter?.addPlaylist("null")
-                   refreshPlaylists()
-                }
-                negativeButton(R.string.add_dialog_negative)
-            }
+            dialog.show()
         }
+
         setUpRecyclerView()
         setUpSearchView()
 
