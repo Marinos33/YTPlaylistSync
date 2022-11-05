@@ -13,7 +13,7 @@ interface PlaylistDao {
     suspend fun loadById(playlistId: Int): PlaylistEntity
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
-    suspend fun insert(playlist: PlaylistEntity)
+    suspend fun insert(playlist: PlaylistEntity): Long
 
     @Update
     suspend fun updateUsers(playlist: PlaylistEntity)

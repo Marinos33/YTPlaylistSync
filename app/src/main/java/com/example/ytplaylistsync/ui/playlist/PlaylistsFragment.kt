@@ -1,9 +1,12 @@
 package com.example.ytplaylistsync.ui.playlist
 
+import android.annotation.SuppressLint
 import android.os.Bundle
+import android.text.InputType
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.webkit.URLUtil
 import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
@@ -13,8 +16,9 @@ import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
-import com.afollestad.materialdialogs.customview.customView
-import com.afollestad.materialdialogs.customview.getCustomView
+import com.afollestad.materialdialogs.WhichButton
+import com.afollestad.materialdialogs.actions.setActionButtonEnabled
+import com.afollestad.materialdialogs.input.getInputField
 import com.afollestad.materialdialogs.input.input
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
@@ -41,6 +45,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
     @Inject
     lateinit var repository: PlaylistRepository
 
+    @SuppressLint("CheckResult")
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View {
@@ -53,18 +58,33 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         // instantiating object of Presenter Interface
         presenter = PlaylistsPresenter(this, PlaylistsModel(repository))
 
-        val dialog = MaterialDialog(requireContext())
-            .title(R.string.add_dialog_title)
-            .positiveButton(R.string.add_dialog_positive)
-            .negativeButton(R.string.add_dialog_negative)
-            .input (hintRes = R.string.add_dialog_hint) { dialog, text ->
-                    Toast.makeText(requireContext(), "Added $text", Toast.LENGTH_SHORT).show()
-                    /*presenter?.addPlaylist("null")
-                    refreshPlaylists()*/
-            }
-
         binding.addButton.setOnClickListener {
-            dialog.show()
+            MaterialDialog(requireContext()).show {
+                title(R.string.add_dialog_title)
+                positiveButton(R.string.add_dialog_positive) { dialog ->
+                    val inputField = dialog.getInputField()
+                    val text = inputField.text.toString()
+                    val isValid = URLUtil.isValidUrl(text)
+
+                    if(isValid){
+                        var isSuccess =presenter?.addPlaylist(text)
+                        if(isSuccess == true){
+                            refreshPlaylists()
+                            Toast.makeText(requireContext(), "Playlist added", Toast.LENGTH_SHORT).show()
+                        }else{
+                            Toast.makeText(requireContext(), "An error happened while adding your playlist", Toast.LENGTH_SHORT).show()
+                        }
+                    }
+                }
+                negativeButton(R.string.add_dialog_negative)
+                input (hintRes = R.string.add_dialog_hint, waitForPositiveButton = false, inputType = InputType.TYPE_TEXT_VARIATION_URI) { dialog, text ->
+                    val inputField = dialog.getInputField()
+                    val isValid = URLUtil.isValidUrl(text.toString())
+
+                    inputField?.error = if (isValid) null else "Must be a valid url!"
+                    dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
+                }
+            }
         }
 
         setUpRecyclerView()

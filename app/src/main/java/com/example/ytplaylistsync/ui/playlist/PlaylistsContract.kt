@@ -18,7 +18,7 @@ interface PlaylistsContract {
 
         suspend fun fetchPlaylists(onFinishedListener: OnFinishedListener): List<PlaylistEntity>?
 
-        suspend fun addPlaylist(name: String, author: String, lastUpdated: String, url: String, thumbnail: String)
+        suspend fun addPlaylist(name: String, author: String, lastUpdated: String, url: String, thumbnail: String): Long
     }
 
     interface Presenter {
@@ -29,6 +29,6 @@ interface PlaylistsContract {
 
         fun fetchPlaylists(): List<PlaylistEntity>
 
-        fun addPlaylist(url: String)
+        fun addPlaylist(url: String): Boolean
     }
 }

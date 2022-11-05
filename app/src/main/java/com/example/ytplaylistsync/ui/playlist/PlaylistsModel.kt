@@ -13,11 +13,7 @@ class PlaylistsModel constructor(
     private val repository: PlaylistRepository): PlaylistsContract.Model {
 
     override suspend fun fetchPlaylists(onFinishedListener: PlaylistsContract.Model.OnFinishedListener): List<PlaylistEntity>? {
-        //generate random number
-        /*val random = (1..100).random()
-        var playlisttoadd = PlaylistEntity(random,"test$random", "test$random", "test$random", "test$random","test$random" )
-        repository.insert(playlisttoadd)*/
-            return repository.getAll()
+        return repository.getAll()
     }
 
     override suspend fun addPlaylist(
@@ -26,8 +22,13 @@ class PlaylistsModel constructor(
         lastUpdated: String,
         url: String,
         thumbnail: String
-    ) {
+    ): Long {
         val playlist = PlaylistEntity(null, name, author, lastUpdated, url, thumbnail)
-        return repository.insert(playlist)
+        return try{
+            repository.insert(playlist)
+        } catch (e: Exception) {
+            Log.e("PlaylistsModel", e.message.toString())
+            -1
+        }
     }
 }

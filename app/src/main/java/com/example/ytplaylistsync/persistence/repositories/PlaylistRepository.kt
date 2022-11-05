@@ -6,5 +6,5 @@ import kotlinx.coroutines.flow.Flow
 interface PlaylistRepository {
      suspend fun getAll(): List<PlaylistEntity>
 
-     suspend fun insert(playlist: PlaylistEntity)
+     suspend fun insert(playlist: PlaylistEntity): Long
 }

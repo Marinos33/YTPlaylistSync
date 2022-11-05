@@ -21,10 +21,12 @@ class PlaylistsPresenter(
         return result!!
     }
 
-    override fun addPlaylist(url: String) {
+    override fun addPlaylist(url: String): Boolean {
         val result = runBlocking {
-            //model.addPlaylist(playlist)
+            val random = (1..100).random()
+            model.addPlaylist("test$random", "test$random", "test$random", url,"test$random" )
         }
+        return result > 0
     }
 
 
