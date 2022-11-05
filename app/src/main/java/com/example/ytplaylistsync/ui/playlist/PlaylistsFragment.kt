@@ -7,12 +7,12 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.URLUtil
-import android.widget.EditText
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
+import androidx.recyclerview.widget.ItemTouchHelper
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.afollestad.materialdialogs.MaterialDialog
@@ -25,10 +25,12 @@ import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
+import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeController
+import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeControllerActions
 import dagger.hilt.android.AndroidEntryPoint
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import javax.inject.Inject
-import kotlin.collections.ArrayList
+
 
 @AndroidEntryPoint
 class PlaylistsFragment : Fragment(), PlaylistsContract.View {
@@ -141,6 +143,13 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         binding.playlistsList.adapter = adapter
 
         binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
+
+        var swipeController = SwipeController(object : SwipeControllerActions() {
+            override fun onRightClicked(position: Int) {
+            }
+        })
+        var itemTouchHelper = ItemTouchHelper(swipeController)
+        itemTouchHelper.attachToRecyclerView(binding.playlistsList)
 
         binding.swipeRefresh.setOnRefreshListener {
             refreshPlaylists()
