@@ -3,6 +3,7 @@ package com.example.ytplaylistsync.ui.playlist
 import android.annotation.SuppressLint
 import android.os.Bundle
 import android.text.InputType
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -146,8 +147,19 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         var swipeController = SwipeController(requireContext(), object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
+                //get the element from the list int the given position
+                //then delete it from the database and refresh the list
+                Log.d("PlaylistsModel", "playlist position: $position")
+                val playlist = (binding.playlistsList.adapter as PlaylistsAdapter?)?.getItem(position)
+                Log.d("PlaylistsModel", "playlist id: ${playlist?.id}")
+                if(playlist != null){
+                    playlist.id?.let { presenter?.deletePlaylist(it) }
+                    refreshPlaylists()
+                }
+                Log.d("PlaylistsModel", "playlist count: ${binding.playlistsList.adapter?.itemCount}")
             }
         })
+
         var itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(binding.playlistsList)
 
@@ -167,6 +179,6 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         }
 
         binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy)
-        adapter?.notifyDataSetChanged()
+        binding.playlistsList.adapter?.notifyDataSetChanged()
     }
 }

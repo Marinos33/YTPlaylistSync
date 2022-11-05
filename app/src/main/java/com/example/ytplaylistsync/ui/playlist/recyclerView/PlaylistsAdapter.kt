@@ -33,6 +33,11 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
         return playlists.size
     }
 
+    //function to get teh item in the given postion
+    fun getItem(position: Int): PlaylistEntity {
+        return playlists[position]
+    }
+
     fun getFilter(): Filter {
         return playlistFilter
     }

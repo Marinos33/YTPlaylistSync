@@ -10,4 +10,6 @@ class PlaylistRepoImpl @Inject constructor(private val db: AppDatabase): Playlis
 
     override suspend fun getAll(): List<PlaylistEntity> = playlistDao.getAll()
     override suspend fun insert(playlist: PlaylistEntity): Long = playlistDao.insert(playlist)
+    override suspend fun delete(playlist: PlaylistEntity): Int = playlistDao.delete(playlist)
+    override suspend fun loadById(playlistId: Int): PlaylistEntity = playlistDao.loadById(playlistId)
 }

@@ -2,6 +2,7 @@ package com.example.ytplaylistsync.ui.playlist
 
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
+import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -27,6 +28,13 @@ class PlaylistsPresenter(
             model.addPlaylist("test$random", "test$random", "test$random", url,"test$random" )
         }
         return OnAddPlaylist(result.message, result.isSuccess)
+    }
+
+    override fun deletePlaylist(id: Int): OnRemovePlaylist {
+        val result = runBlocking {
+            model.deletePlaylist(id)
+        }
+        return OnRemovePlaylist(result.message, result.isSuccess)
     }
 
 

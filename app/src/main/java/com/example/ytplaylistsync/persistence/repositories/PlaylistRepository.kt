@@ -7,4 +7,8 @@ interface PlaylistRepository {
      suspend fun getAll(): List<PlaylistEntity>
 
      suspend fun insert(playlist: PlaylistEntity): Long
+
+     suspend fun delete(playlist: PlaylistEntity): Int
+
+     suspend fun loadById(playlistId: Int): PlaylistEntity
 }

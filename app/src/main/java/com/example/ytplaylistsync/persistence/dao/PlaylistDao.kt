@@ -9,7 +9,7 @@ interface PlaylistDao {
     @Query("SELECT * FROM playlist")
     suspend fun getAll(): List<PlaylistEntity>
 
-    @Query("SELECT * FROM playlist WHERE id IN (:playlistId)")
+    @Query("SELECT * FROM playlist WHERE id = :playlistId")
     suspend fun loadById(playlistId: Int): PlaylistEntity
 
     @Insert(onConflict = OnConflictStrategy.ABORT)
@@ -19,5 +19,5 @@ interface PlaylistDao {
     suspend fun updateUsers(playlist: PlaylistEntity)
 
     @Delete
-    suspend fun delete(playlist: PlaylistEntity)
+    suspend fun delete(playlist: PlaylistEntity): Int
 }
