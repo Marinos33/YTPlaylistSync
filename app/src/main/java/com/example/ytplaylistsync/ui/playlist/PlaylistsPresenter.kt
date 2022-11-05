@@ -1,7 +1,7 @@
 package com.example.ytplaylistsync.ui.playlist
 
-import android.util.Log
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
+import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -21,12 +21,12 @@ class PlaylistsPresenter(
         return result!!
     }
 
-    override fun addPlaylist(url: String): Boolean {
+    override fun addPlaylist(url: String): OnAddPlaylist {
         val result = runBlocking {
             val random = (1..100).random()
             model.addPlaylist("test$random", "test$random", "test$random", url,"test$random" )
         }
-        return result > 0
+        return OnAddPlaylist(result.message, result.isSuccess)
     }
 
 

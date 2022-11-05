@@ -1,6 +1,7 @@
 package com.example.ytplaylistsync.ui.playlist
 
 import android.util.Log
+import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -22,13 +23,14 @@ class PlaylistsModel constructor(
         lastUpdated: String,
         url: String,
         thumbnail: String
-    ): Long {
+    ): DbResponse {
         val playlist = PlaylistEntity(null, name, author, lastUpdated, url, thumbnail)
         return try{
-            repository.insert(playlist)
+            var rowAffected = repository.insert(playlist)
+            return DbResponse("Playlist added successfully", rowAffected)
         } catch (e: Exception) {
             Log.e("PlaylistsModel", e.message.toString())
-            -1
+            return DbResponse(e.message.toString(), -1)
         }
     }
 }

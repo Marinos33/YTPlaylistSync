@@ -67,12 +67,13 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                     val isValid = URLUtil.isValidUrl(text)
 
                     if(isValid){
-                        var isSuccess =presenter?.addPlaylist(text)
-                        if(isSuccess == true){
+                        var result = presenter?.addPlaylist(text)
+                        if(result?.isSuccess == true){
                             refreshPlaylists()
                             Toast.makeText(requireContext(), "Playlist added", Toast.LENGTH_SHORT).show()
                         }else{
-                            Toast.makeText(requireContext(), "An error happened while adding your playlist", Toast.LENGTH_SHORT).show()
+                            Toast.makeText(requireContext(),
+                                "An error happened while adding your playlist, reason: ${result?.message}", Toast.LENGTH_SHORT).show()
                         }
                     }
                 }
