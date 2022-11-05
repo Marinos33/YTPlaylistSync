@@ -144,7 +144,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
 
-        var swipeController = SwipeController(object : SwipeControllerActions() {
+        var swipeController = SwipeController(requireContext(), object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
             }
         })
