@@ -25,9 +25,11 @@ import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentPlaylistsBinding
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
+import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
 import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeController
 import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeControllerActions
+import com.yausername.youtubedl_android.YoutubeDL
 import dagger.hilt.android.AndroidEntryPoint
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import javax.inject.Inject
@@ -48,6 +50,9 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
     @Inject
     lateinit var repository: PlaylistRepository
 
+    @Inject
+    lateinit var youtubeDL: YoutubeDLService
+
     @SuppressLint("CheckResult")
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -59,7 +64,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         val root: View = binding.root
 
         // instantiating object of Presenter Interface
-        presenter = PlaylistsPresenter(this, PlaylistsModel(repository))
+        presenter = PlaylistsPresenter(this, youtubeDL, PlaylistsModel(repository))
 
         binding.addButton.setOnClickListener {
             MaterialDialog(requireContext()).show {

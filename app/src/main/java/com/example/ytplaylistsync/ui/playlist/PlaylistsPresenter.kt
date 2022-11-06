@@ -1,12 +1,15 @@
 package com.example.ytplaylistsync.ui.playlist
 
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
+import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
+import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
     private var mainView: PlaylistsContract.View?,
+    private var youtubeDL: YoutubeDLService,
     private val model: PlaylistsContract.Model) : PlaylistsContract.Presenter,
     PlaylistsContract.Model.OnFinishedListener {
 
@@ -24,8 +27,18 @@ class PlaylistsPresenter(
 
     override fun addPlaylist(url: String): OnAddPlaylist {
         val result = runBlocking {
-            val random = (1..100).random()
-            model.addPlaylist("test$random", "test$random", "test$random", url,"test$random" )
+            var info = youtubeDL.getInfoPlaylist(url)
+            var thumbnailUrl: String? = null
+
+            if(info.thumbnail != null) {
+                thumbnailUrl = info.thumbnail
+            }else if(info.thumbnails != null) {
+                thumbnailUrl = info.thumbnails[0].url
+            }
+
+            var now: String = java.time.LocalDateTime.now().toString()
+
+            model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
         }
         return OnAddPlaylist(result.message, result.isSuccess)
     }

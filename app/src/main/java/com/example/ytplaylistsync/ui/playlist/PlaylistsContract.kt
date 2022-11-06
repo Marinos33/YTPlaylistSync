@@ -21,7 +21,7 @@ interface PlaylistsContract {
 
         suspend fun fetchPlaylists(onFinishedListener: OnFinishedListener): List<PlaylistEntity>?
 
-        suspend fun addPlaylist(name: String, author: String, lastUpdated: String, url: String, thumbnail: String): DbResponse
+        suspend fun addPlaylist(name: String, author: String, lastUpdated: String, url: String, thumbnail: String?): DbResponse
 
         suspend fun deletePlaylist(id: Int): DbResponse
     }

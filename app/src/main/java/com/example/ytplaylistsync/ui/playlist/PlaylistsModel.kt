@@ -22,7 +22,7 @@ class PlaylistsModel constructor(
         author: String,
         lastUpdated: String,
         url: String,
-        thumbnail: String
+        thumbnail: String?
     ): DbResponse {
         val playlist = PlaylistEntity(null, name, author, lastUpdated, url, thumbnail)
         return try{
