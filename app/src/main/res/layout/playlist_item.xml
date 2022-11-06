@@ -55,7 +55,7 @@
     </LinearLayout>
 
     <ImageButton
-        android:id="@+id/imageButton"
+        android:id="@+id/download_button"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"

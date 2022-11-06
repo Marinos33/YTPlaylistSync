@@ -99,7 +99,7 @@ class DashboardFragment : Fragment() {
     private fun isStoragePermissionGranted(): Boolean {
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             return (PermissionChecker.checkSelfPermission(requireContext(),Manifest.permission.WRITE_EXTERNAL_STORAGE)
-                    == PackageManager.PERMISSION_GRANTED)
+                    == PermissionChecker.PERMISSION_GRANTED)
         } else {
             true
         }

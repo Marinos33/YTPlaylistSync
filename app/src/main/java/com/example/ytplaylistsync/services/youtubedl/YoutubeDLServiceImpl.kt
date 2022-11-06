@@ -1,15 +1,69 @@
 package com.example.ytplaylistsync.services.youtubedl
 
+import android.Manifest
+import android.os.Build
+import android.os.Environment
+import android.util.Log
+import android.widget.Toast
+import androidx.core.content.PermissionChecker
+import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import com.yausername.youtubedl_android.mapper.VideoInfo
+import io.reactivex.Observable
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.disposables.Disposable
+import io.reactivex.schedulers.Schedulers
+import java.io.File
 
 class YoutubeDLServiceImpl: YoutubeDLService {
     private val objectMapper = ObjectMapper()
+    private val compositeDisposable = CompositeDisposable()
+    //create random processId
+    private val processId = (0..100000).random()
 
-    override fun downLoadPlaylist(url: String) {
-        TODO("Not yet implemented")
+    override fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback): Boolean {
+        var isSuccessful = false
+
+        val youtubeDLDir = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            playlist.name
+        )
+
+        var metadata = "-metadata album=${playlist.name}"
+
+        val request = YoutubeDLRequest(playlist.url)
+
+        request.addOption("--ignore-errors")
+        request.addOption("-f", "ba")
+        request.addOption("--extract-audio")
+        request.addOption("--audio-format", "mp3")
+        request.addOption("--audio-quality", "0")
+        request.addOption("--add-metadata")
+        request.addOption("--postprocessor-args", metadata)
+        request.addOption("--yes-playlist")
+        request.addOption("--embed-thumbnail")
+        //need to have read permission storage.... maybe
+        request.addOption("--download-archive", playlist.name + ".txt")
+        request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s.%(ext)s")
+
+        val disposable: Disposable = Observable.fromCallable {
+            YoutubeDL.getInstance().execute(request, processId.toString(), callback)
+        }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ youtubeDLResponse ->
+                Log.d("YoutubeDL", youtubeDLResponse.out)
+                isSuccessful = true
+            }) { e ->
+                Log.d("YoutubeDL", e.message.toString())
+                isSuccessful = false
+            }
+        compositeDisposable.add(disposable)
+        return isSuccessful
     }
 
     override suspend fun getInfoPlaylist(url: String): VideoInfo? {
@@ -25,6 +79,4 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             null
         }
     }
-
-
 }

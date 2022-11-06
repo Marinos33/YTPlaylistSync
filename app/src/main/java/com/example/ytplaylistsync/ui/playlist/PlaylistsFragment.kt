@@ -1,6 +1,8 @@
 package com.example.ytplaylistsync.ui.playlist
 
+import android.Manifest
 import android.annotation.SuppressLint
+import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -11,6 +13,7 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
+import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -145,7 +148,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         }
 
         //attach adapter to list
-        adapter = PlaylistsAdapter(playlistsCopy)
+        adapter = PlaylistsAdapter(playlistsCopy, presenter!!)
         binding.playlistsList.adapter = adapter
 
         binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
@@ -183,7 +186,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
             }
         }
 
-        binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy)
+        binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy, presenter!!)
         binding.playlistsList.adapter?.notifyDataSetChanged()
     }
 }

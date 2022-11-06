@@ -6,10 +6,11 @@ import android.widget.Filter
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
+import com.example.ytplaylistsync.ui.playlist.PlaylistsPresenter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
+class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var presenter: PlaylistsPresenter) :
     RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     // Create a copy of localityList that is not a clone
@@ -21,7 +22,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>) :
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
         return PlaylistsViewHolder(
             LayoutInflater.from(parent.context)
-                .inflate(R.layout.playlist_item, parent, false)
+                .inflate(R.layout.playlist_item, parent, false), presenter
         )
     }
 

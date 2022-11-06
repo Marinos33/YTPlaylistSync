@@ -4,11 +4,6 @@ import android.util.Log
 import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
-import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.GlobalScope
-import kotlinx.coroutines.launch
-import javax.inject.Inject
 
 class PlaylistsModel constructor(
     private val repository: PlaylistRepository): PlaylistsContract.Model {
@@ -45,5 +40,9 @@ class PlaylistsModel constructor(
             Log.e("PlaylistsModel", e.message.toString())
             return DbResponse(e.message.toString(), -1)
         }
+    }
+
+    override suspend fun loadById(id: Int): PlaylistEntity {
+        return repository.loadById(id)
     }
 }

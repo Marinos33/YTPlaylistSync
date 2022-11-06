@@ -24,6 +24,8 @@ interface PlaylistsContract {
         suspend fun addPlaylist(name: String, author: String, lastUpdated: String, url: String, thumbnail: String?): DbResponse
 
         suspend fun deletePlaylist(id: Int): DbResponse
+
+        suspend fun loadById(id: Int): PlaylistEntity
     }
 
     interface Presenter {
@@ -37,5 +39,7 @@ interface PlaylistsContract {
         fun addPlaylist(url: String): OnAddPlaylist
 
         fun deletePlaylist(id: Int): OnRemovePlaylist
+
+        fun downloadPlaylist(id: Int): Boolean
     }
 }
