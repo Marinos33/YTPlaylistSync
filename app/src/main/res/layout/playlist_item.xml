@@ -13,12 +13,16 @@
         android:layout_height="match_parent"
         android:layout_weight="1"
         android:contentDescription="@string/todo"
+        android:adjustViewBounds="true"
+        android:scaleType="fitCenter"
+        android:layout_marginStart="5dp"
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_baseline_music_note_24" />
 
     <LinearLayout
         android:layout_width="232dp"
         android:layout_height="match_parent"
+        android:layout_marginStart="10dp"
         android:gravity="center|start"
         android:orientation="vertical">
 

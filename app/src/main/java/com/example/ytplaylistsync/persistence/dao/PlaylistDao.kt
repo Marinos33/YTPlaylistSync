@@ -6,7 +6,7 @@ import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistDao {
-    @Query("SELECT * FROM playlist")
+    @Query("SELECT * FROM playlist ORDER BY playlist_name ASC")
     suspend fun getAll(): List<PlaylistEntity>
 
     @Query("SELECT * FROM playlist WHERE id = :playlistId")

@@ -5,7 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    android:onClick="onClickAddPlaylist"
     tools:context=".ui.playlist.PlaylistsFragment">
 
     <androidx.appcompat.widget.SearchView

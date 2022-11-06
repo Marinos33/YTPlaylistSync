@@ -12,14 +12,18 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         TODO("Not yet implemented")
     }
 
-    override fun getInfoPlaylist(url: String): VideoInfo {
-        var request =
-            YoutubeDLRequest("https://www.youtube.com/playlist?list=PLa4gBFCX40Or71YuQszeR733MTU-s2Dkh")
-        request.addOption("--flat-playlist")
-        request.addOption("--dump-single-json")
-        var response = YoutubeDL.getInstance().execute(request, null, null)
+    override suspend fun getInfoPlaylist(url: String): VideoInfo? {
+        return try{
+            var request =
+                YoutubeDLRequest(url)
+            request.addOption("--flat-playlist")
+            request.addOption("--dump-single-json")
+            var response = YoutubeDL.getInstance().execute(request, null, null)
 
-        return objectMapper.readValue(response.out, VideoInfo::class.java)
+            objectMapper.readValue(response.out, VideoInfo::class.java)
+        }catch (e: Exception){
+            null
+        }
     }
 
 

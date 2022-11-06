@@ -6,5 +6,5 @@ interface YoutubeDLService {
 
     fun downLoadPlaylist(url: String)
 
-    fun getInfoPlaylist(url: String): VideoInfo
+    suspend fun getInfoPlaylist(url: String): VideoInfo?
 }

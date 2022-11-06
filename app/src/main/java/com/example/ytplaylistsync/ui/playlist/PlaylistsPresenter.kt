@@ -1,5 +1,6 @@
 package com.example.ytplaylistsync.ui.playlist
 
+import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
@@ -28,17 +29,22 @@ class PlaylistsPresenter(
     override fun addPlaylist(url: String): OnAddPlaylist {
         val result = runBlocking {
             var info = youtubeDL.getInfoPlaylist(url)
-            var thumbnailUrl: String? = null
+            if(info != null){
+                var thumbnailUrl: String? = null
 
-            if(info.thumbnail != null) {
-                thumbnailUrl = info.thumbnail
-            }else if(info.thumbnails != null) {
-                thumbnailUrl = info.thumbnails[0].url
+                if(info.thumbnail != null) {
+                    thumbnailUrl = info.thumbnail
+                }else if(info.thumbnails != null) {
+                    thumbnailUrl = info.thumbnails[0].url
+                }
+
+                var now: String = java.time.LocalDateTime.now().toString()
+
+                model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
             }
-
-            var now: String = java.time.LocalDateTime.now().toString()
-
-            model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
+            else{
+                DbResponse("Error: Invalid playlist url", -1)
+            }
         }
         return OnAddPlaylist(result.message, result.isSuccess)
     }
