@@ -65,10 +65,6 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
     }
 
     private fun isStoragePermissionGranted(): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            return (PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED && PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED)
-        } else {
-            true
-        }
+        return (PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED && PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED)
     }
 }

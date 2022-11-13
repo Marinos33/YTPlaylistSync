@@ -46,8 +46,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         request.addOption("--postprocessor-args", metadata)
         request.addOption("--yes-playlist")
         request.addOption("--embed-thumbnail")
-        //need to have read permission storage.... maybe
-        request.addOption("--download-archive", playlist.name + ".txt")
+        request.addOption("--download-archive", youtubeDLDir.absolutePath + "/archive.txt")
         request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s.%(ext)s")
 
         val disposable: Disposable = Observable.fromCallable {
