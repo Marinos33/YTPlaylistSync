@@ -33,7 +33,7 @@
             android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="bold"
-            tools:text="New Delhi" />
+            tools:text="Playlist name" />
 
         <TextView
             android:id="@+id/playlist_author"
@@ -42,7 +42,7 @@
             android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
             android:textStyle="italic"
-            tools:text="New Delhi" />
+            tools:text="uploader" />
 
         <TextView
             android:id="@+id/playlist_last_updated"
@@ -50,19 +50,35 @@
             android:layout_height="wrap_content"
             android:textColor="@color/textColor"
             android:textSize="@dimen/text_size_medium"
-            tools:text="New Delhi" />
+            tools:text="Updated" />
 
     </LinearLayout>
 
-    <ImageButton
-        android:id="@+id/download_button"
+    <FrameLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"
-        android:contentDescription="@string/todo"
-        android:scaleType="fitCenter"
-        android:background="@android:color/transparent"
-        app:srcCompat="@drawable/ic_baseline_refresh_24"
-        tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+        android:layout_weight="1">
+
+        <ProgressBar
+            android:id="@+id/progressBar"
+            style="?android:attr/progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:indeterminate="false"
+            android:visibility="gone"
+            android:progressDrawable="@drawable/circle_shape"
+            android:indeterminateTint="@color/white"
+
+            android:layout_height="match_parent" />
+
+        <ImageButton
+            android:id="@+id/download_button"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/transparent"
+            android:contentDescription="@string/todo"
+            android:scaleType="fitCenter"
+            app:srcCompat="@drawable/ic_baseline_refresh_24"
+            tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
+    </FrameLayout>
 
 </LinearLayout>

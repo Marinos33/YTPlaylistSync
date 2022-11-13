@@ -1,28 +1,18 @@
 package com.example.ytplaylistsync.ui.playlist.recyclerView
 
 import android.Manifest
-import android.os.Build
-import android.os.Environment
 import android.util.Log
 import android.view.View
 import android.widget.ImageView
+import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
-import androidx.core.content.ContentProviderCompat.requireContext
 import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.RecyclerView
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.ui.playlist.PlaylistsPresenter
 import com.squareup.picasso.Picasso
-import com.yausername.youtubedl_android.YoutubeDL
-import com.yausername.youtubedl_android.YoutubeDLRequest
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
-import java.io.File
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -33,9 +23,7 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
     private val lastUpdated: TextView = itemView.findViewById(R.id.playlist_last_updated)
     private val thumbnail: ImageView = itemView.findViewById(R.id.playlist_thumbnail)
     private val downloadButton = itemView.findViewById<ImageView>(R.id.download_button)
-
-    private val compositeDisposable = CompositeDisposable()
-    private val processId = "MyDlProcess"
+    private val progress = itemView.findViewById<ProgressBar>(R.id.progressBar)
 
     fun bind(playlistDataObject: PlaylistEntity) {
         name.text = playlistDataObject.name
@@ -44,7 +32,7 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
         val localDateTime = LocalDateTime.parse(playlistDataObject.lastUpdated)
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
         val output: String = formatter.format(localDateTime)
-        lastUpdated.text = "last updated on $output"
+        lastUpdated.text = "Updated : $output"
 
 
         if(playlistDataObject.thumbnail != null) {
@@ -60,8 +48,27 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
                 return@setOnClickListener
             }
 
-            presenter.downloadPlaylist(playlistDataObject.id!!)
+            presenter.downloadPlaylist(playlistDataObject.id!!, ::progressCallback)
         }
+
+        progress.isIndeterminate = false
+    }
+
+    private fun progressCallback(progressValue: Float){
+        //run on ui thread to update progress bar
+        itemView.post {
+            if(progressValue < 100){
+                downloadButton.visibility = View.GONE
+                progress.visibility = View.VISIBLE
+                progress.setProgress(progressValue.toInt(), true)
+            }else{
+                downloadButton.visibility = View.VISIBLE
+                progress.visibility = View.GONE
+                progress.setProgress(0, false)
+            }
+        }
+
+        Log.d("YoutubeDL", "$progressValue")
     }
 
     private fun isStoragePermissionGranted(): Boolean {

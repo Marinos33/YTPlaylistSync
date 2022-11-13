@@ -6,8 +6,6 @@ import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
 import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
-import com.yausername.youtubedl_android.DownloadProgressCallback
-import com.yausername.youtubedl_android.YoutubeDL
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -58,10 +56,10 @@ class PlaylistsPresenter(
         return OnRemovePlaylist(result.message, result.isSuccess)
     }
 
-    override fun downloadPlaylist(id: Int): Boolean {
+    override fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit): Boolean {
         val result = runBlocking {
             youtubeDL.downLoadPlaylist(model.loadById(id)) { progress, etaInSeconds, line ->
-                Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
+                progressCallback(progress)
             }
         }
         return result!!
