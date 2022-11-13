@@ -30,7 +30,13 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             playlist.name
         )
 
-        var metadata = "-metadata album=${playlist.name}"
+        //format playlist name to add \\ befroe every space
+        val playlistName = playlist.name.replace(" ", "\\ ")
+
+        //format playlist author to add \\ befroe every space
+        val playlistAuthor = playlist.author.replace(" ", "\\ ")
+
+        var metadata = "-metadata album=${playlistName} artist=${playlistAuthor}"
 
         val request = YoutubeDLRequest(playlist.url)
 
