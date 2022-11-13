@@ -61,13 +61,12 @@
 
         <ProgressBar
             android:id="@+id/progressBar"
-            style="?android:attr/progressBarStyleHorizontal"
+            style="?android:attr/progressBarStyle"
             android:layout_width="match_parent"
-            android:indeterminate="false"
+            android:indeterminate="true"
             android:visibility="gone"
             android:progressDrawable="@drawable/circle_shape"
             android:indeterminateTint="@color/white"
-
             android:layout_height="match_parent" />
 
         <ImageButton

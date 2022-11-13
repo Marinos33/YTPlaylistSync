@@ -1,11 +1,7 @@
 package com.example.ytplaylistsync.services.youtubedl
 
-import android.Manifest
-import android.os.Build
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
-import androidx.core.content.PermissionChecker
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yausername.youtubedl_android.DownloadProgressCallback
@@ -16,6 +12,7 @@ import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
+import io.reactivex.internal.operators.single.SingleDoOnSuccess
 import io.reactivex.schedulers.Schedulers
 import java.io.File
 
@@ -25,7 +22,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
     //create random processId
     private val processId = (0..100000).random()
 
-    override fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback): Boolean {
+    override fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit) {
         var isSuccessful = false
 
         val youtubeDLDir = File(
@@ -57,12 +54,14 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             .subscribe({ youtubeDLResponse ->
                 Log.d("YoutubeDL", youtubeDLResponse.out)
                 isSuccessful = true
+                onSuccess()
             }) { e ->
                 Log.d("YoutubeDL", e.message.toString())
                 isSuccessful = false
+                onFailure()
             }
+
         compositeDisposable.add(disposable)
-        return isSuccessful
     }
 
     override suspend fun getInfoPlaylist(url: String): VideoInfo? {

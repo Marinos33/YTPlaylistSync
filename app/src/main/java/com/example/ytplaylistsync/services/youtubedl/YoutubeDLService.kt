@@ -6,7 +6,7 @@ import com.yausername.youtubedl_android.mapper.VideoInfo
 
 interface YoutubeDLService {
 
-    fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback): Boolean
+    fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit)
 
     suspend fun getInfoPlaylist(url: String): VideoInfo?
 }

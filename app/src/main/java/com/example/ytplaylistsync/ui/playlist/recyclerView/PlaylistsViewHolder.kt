@@ -44,31 +44,27 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
         downloadButton.setOnClickListener {
             Log.d("PlaylistsAdapter", "Download button clicked")
             if (!isStoragePermissionGranted()) {
-                Toast.makeText(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show();
+                Toast.makeText(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 
-            presenter.downloadPlaylist(playlistDataObject.id!!, ::progressCallback)
-        }
+            downloadButton.visibility = View.GONE
+            progress.visibility = View.VISIBLE
 
-        progress.isIndeterminate = false
-    }
-
-    private fun progressCallback(progressValue: Float){
-        //run on ui thread to update progress bar
-        itemView.post {
-            if(progressValue < 100){
-                downloadButton.visibility = View.GONE
-                progress.visibility = View.VISIBLE
-                progress.setProgress(progressValue.toInt(), true)
-            }else{
-                downloadButton.visibility = View.VISIBLE
+            presenter.downloadPlaylist(playlistDataObject.id!!, { progress ->
+                Log.d("YoutubeDL", "$progress%")
+            },
+            {
+                Log.d("YoutubeDL", "Download failed")
                 progress.visibility = View.GONE
-                progress.setProgress(0, false)
-            }
+                downloadButton.visibility = View.VISIBLE
+            },
+            {
+                Log.d("YoutubeDL", "Download finished")
+                progress.visibility = View.GONE
+                downloadButton.visibility = View.VISIBLE
+            })
         }
-
-        Log.d("YoutubeDL", "$progressValue")
     }
 
     private fun isStoragePermissionGranted(): Boolean {

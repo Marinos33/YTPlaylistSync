@@ -40,6 +40,10 @@ interface PlaylistsContract {
 
         fun deletePlaylist(id: Int): OnRemovePlaylist
 
-        fun downloadPlaylist(id: Int, ProgressCallback:(value: Float) -> Unit): Boolean
+        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit, onFailure: () -> Unit, onSuccess: () -> Unit): Unit
+
+        fun downloadPlaylist(id: Int): Unit
+
+        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit): Unit
     }
 }

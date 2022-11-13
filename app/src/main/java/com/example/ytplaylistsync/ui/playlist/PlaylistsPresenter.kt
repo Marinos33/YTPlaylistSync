@@ -56,13 +56,52 @@ class PlaylistsPresenter(
         return OnRemovePlaylist(result.message, result.isSuccess)
     }
 
-    override fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit): Boolean {
-        val result = runBlocking {
-            youtubeDL.downLoadPlaylist(model.loadById(id)) { progress, etaInSeconds, line ->
-                progressCallback(progress)
-            }
+    override fun downloadPlaylist(
+        id: Int,
+        progressCallback: (value: Float) -> Unit,
+        onFailure: () -> Unit,
+        onSuccess: () -> Unit
+    ) {
+        val playlist = runBlocking {
+            return@runBlocking model.loadById(id)
         }
-        return result!!
+
+        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+            progressCallback(progress)
+        }, {
+            onSuccess()
+        }, {
+            onFailure()
+        })
+    }
+
+    override fun downloadPlaylist(id: Int): Unit {
+        val playlist = runBlocking {
+            return@runBlocking model.loadById(id)
+        }
+
+        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+                Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
+            }, {
+                Log.d("YoutubeDL", "Download finished")
+            }, {
+                Log.d("YoutubeDL", "Download failed")
+            })
+    }
+
+    override fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit) {
+        val playlist = runBlocking {
+            return@runBlocking model.loadById(id)
+        }
+
+        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+            Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
+            progressCallback(progress)
+        }, {
+            Log.d("YoutubeDL", "Download finished")
+        }, {
+            Log.d("YoutubeDL", "Download failed")
+        })
     }
 
 
