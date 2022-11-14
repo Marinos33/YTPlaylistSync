@@ -58,6 +58,7 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
                 Log.d("YoutubeDL", "Download failed")
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
+                itemView
             },
             {
                 Log.d("YoutubeDL", "Download finished")

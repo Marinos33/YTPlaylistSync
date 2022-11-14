@@ -69,8 +69,16 @@ class PlaylistsPresenter(
         youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
             progressCallback(progress)
         }, {
+            runBlocking {
+                model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
+            }
+            mainView?.refreshPlaylists()
             onSuccess()
         }, {
+            runBlocking {
+                model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
+            }
+            mainView?.refreshPlaylists()
             onFailure()
         })
     }

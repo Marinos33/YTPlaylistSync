@@ -11,4 +11,6 @@ interface PlaylistRepository {
      suspend fun delete(playlist: PlaylistEntity): Int
 
      suspend fun loadById(playlistId: Int): PlaylistEntity
+
+     suspend fun updatePlaylistLastUpdate(playlistId: Int, lastUpdated: String)
 }

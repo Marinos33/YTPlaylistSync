@@ -23,34 +23,36 @@ class YoutubeDLServiceImpl: YoutubeDLService {
     private val processId = (0..100000).random()
 
     override fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        var isSuccessful = false
-
         val youtubeDLDir = File(
+            //TODO change download directory to music directory
                 Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
             playlist.name
         )
 
-        //format playlist name to add \\ befroe every space
+        //format playlist name to add \\ before every space
         val playlistName = playlist.name.replace(" ", "\\ ")
 
-        //format playlist author to add \\ befroe every space
-        val playlistAuthor = playlist.author.replace(" ", "\\ ")
+        //format playlist author to add \\ before every space
+        //val playlistAuthor = playlist.author.replace(" ", "\\ ")
 
-        var metadata = "-metadata album=${playlistName} artist=${playlistAuthor}"
+        var metadata = "-metadata album=${playlistName}"
 
         val request = YoutubeDLRequest(playlist.url)
 
-        request.addOption("--ignore-errors")
-        request.addOption("-f", "ba")
         request.addOption("--extract-audio")
         request.addOption("--audio-format", "mp3")
         request.addOption("--audio-quality", "0")
         request.addOption("--add-metadata")
+        //todo add thumbnail if set in settings
+        //request.addOption("--write-thumbnail")
+        //request.addOption("--embed-thumbnail")
+        request.addOption("-f", "ba")
+        request.addOption("--ignore-errors")
+        request.addOption("--no-abort-on-error")
         request.addOption("--postprocessor-args", metadata)
         request.addOption("--yes-playlist")
-        request.addOption("--embed-thumbnail")
         request.addOption("--download-archive", youtubeDLDir.absolutePath + "/archive.txt")
-        request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s.%(ext)s")
+        request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
 
         val disposable: Disposable = Observable.fromCallable {
             YoutubeDL.getInstance().execute(request, processId.toString(), callback)
@@ -59,11 +61,9 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ youtubeDLResponse ->
                 Log.d("YoutubeDL", youtubeDLResponse.out)
-                isSuccessful = true
                 onSuccess()
             }) { e ->
                 Log.d("YoutubeDL", e.message.toString())
-                isSuccessful = false
                 onFailure()
             }
 

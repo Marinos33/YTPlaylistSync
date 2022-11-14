@@ -45,4 +45,8 @@ class PlaylistsModel constructor(
     override suspend fun loadById(id: Int): PlaylistEntity {
         return repository.loadById(id)
     }
+
+    override suspend fun updatePlaylistLastUpdate(playlistId: Int, lastUpdated: String) {
+        repository.updatePlaylistLastUpdate(playlistId, lastUpdated)
+    }
 }

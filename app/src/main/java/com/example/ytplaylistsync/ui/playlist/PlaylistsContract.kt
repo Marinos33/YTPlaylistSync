@@ -26,6 +26,8 @@ interface PlaylistsContract {
         suspend fun deletePlaylist(id: Int): DbResponse
 
         suspend fun loadById(id: Int): PlaylistEntity
+
+        suspend fun updatePlaylistLastUpdate(playlistId: Int, lastUpdated: String)
     }
 
     interface Presenter {

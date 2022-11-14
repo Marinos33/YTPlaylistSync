@@ -15,8 +15,9 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(playlist: PlaylistEntity): Long
 
-    @Update
-    suspend fun updateUsers(playlist: PlaylistEntity)
+    //update playlist lastUpdateted whre id = playlistId
+    @Query("UPDATE playlist SET playlist_last_updated = :lastUpdated WHERE id = :playlistId")
+    suspend fun updatePlaylistLastUpdate(playlistId: Int, lastUpdated: String)
 
     @Delete
     suspend fun delete(playlist: PlaylistEntity): Int
