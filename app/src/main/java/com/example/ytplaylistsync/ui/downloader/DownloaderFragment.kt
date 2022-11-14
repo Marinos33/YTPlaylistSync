@@ -30,21 +30,9 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
         super.onCreate(savedInstanceState)
 
         val view = inflater.inflate(R.layout.fragment_downloader, container, false)
-        // assigning ID of the TextView
-        textView = view.findViewById(R.id.textView)
-
-        // assigning ID of the Button
-        button = view.findViewById(R.id.button)
-
-        // assigning ID of the ProgressBar
-        progressBar = view.findViewById(R.id.progressBar)
 
         // instantiating object of Presenter Interface
         presenter = DownloaderPresenter(this, DownloaderModel())
-
-        // operations to be performed when
-        // user clicks the button
-        this.button!!.setOnClickListener(View.OnClickListener { presenter!!.onButtonClick() })
 
         return view
     }
@@ -56,23 +44,5 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter!!.onDestroy()
-    }
-
-    // method to display the Course Detail TextView
-    override fun showProgress() {
-        progressBar!!.visibility = View.VISIBLE
-        textView!!.visibility = View.INVISIBLE
-    }
-
-    // method to hide the Course Detail TextView
-    override fun hideProgress() {
-        progressBar!!.visibility = View.GONE
-        textView!!.visibility = View.VISIBLE
-    }
-
-    // method to set random string
-    // in the Course Detail TextView
-    override fun setString(string: String?) {
-        textView!!.text = string
     }
 }
