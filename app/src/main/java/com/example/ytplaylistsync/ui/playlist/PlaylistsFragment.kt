@@ -115,6 +115,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
     }
 
     private fun setUpSearchView() {
+        adapter = binding.playlistsList.adapter as PlaylistsAdapter?
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter?.getFilter()?.filter(query)

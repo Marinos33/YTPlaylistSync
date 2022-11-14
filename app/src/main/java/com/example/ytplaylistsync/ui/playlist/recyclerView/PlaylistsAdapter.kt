@@ -51,7 +51,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var pre
             } else {
                 val query = constraint.toString().trim().lowercase(Locale.ROOT)
                 initialPlaylistDataList.forEach {
-                    if (it.name?.lowercase(Locale.ROOT)?.contains(query) == true) {
+                    if (it.name?.lowercase(Locale.ROOT)?.contains(query) == true || it.url?.lowercase(Locale.ROOT)?.contains(query) == true) {
                         filteredList.add(it)
                     }
                 }

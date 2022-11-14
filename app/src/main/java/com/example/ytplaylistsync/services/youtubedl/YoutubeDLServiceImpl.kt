@@ -48,7 +48,6 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         //request.addOption("--embed-thumbnail")
         request.addOption("-f", "ba")
         request.addOption("--ignore-errors")
-        request.addOption("--no-abort-on-error")
         request.addOption("--postprocessor-args", metadata)
         request.addOption("--yes-playlist")
         request.addOption("--download-archive", youtubeDLDir.absolutePath + "/archive.txt")

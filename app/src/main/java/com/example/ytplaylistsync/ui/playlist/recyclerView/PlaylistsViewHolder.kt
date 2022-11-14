@@ -13,6 +13,7 @@ import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.ui.playlist.PlaylistsPresenter
 import com.squareup.picasso.Picasso
+import es.dmoral.toasty.Toasty
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
@@ -58,12 +59,13 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
                 Log.d("YoutubeDL", "Download failed")
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
-                itemView
+                Toasty.error(downloadButton.context, "Something went wrong while downloading your playlist. Things may have worked out perfectly... or not", Toast.LENGTH_LONG).show()
             },
             {
                 Log.d("YoutubeDL", "Download finished")
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
+                Toasty.success(downloadButton.context, "Playlist downloaded successfully", Toast.LENGTH_LONG).show()
             })
         }
     }
