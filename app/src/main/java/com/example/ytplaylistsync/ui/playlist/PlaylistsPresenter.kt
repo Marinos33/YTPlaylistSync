@@ -21,7 +21,7 @@ class PlaylistsPresenter(
     override fun refreshPlaylists() {
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
-               var playlists = model.fetchPlaylists(this@PlaylistsPresenter)
+               val playlists = model.fetchPlaylists(this@PlaylistsPresenter)
 
                     launch(Dispatchers.Main) {
                         if (playlists != null) {

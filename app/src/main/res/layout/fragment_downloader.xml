@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="enter url"
+                android:hint="@string/hint_url"
                 android:layout_marginTop="50dp"
                 android:inputType="textUri"
                 android:textColor="@color/textColor"
@@ -91,7 +91,7 @@
                 android:layout_weight="1"
                 android:ems="10"
                 android:gravity="center_vertical"
-                android:hint="enter custom command"
+                android:hint="@string/hint_command"
                 android:inputType="textMultiLine"
                 android:textColor="@color/textColor"
                 android:textColorHint="@color/textColor" />
@@ -102,7 +102,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Start download" />
+                android:text="@string/start_download" />
 
             <Button
                 android:id="@+id/stop_button"
@@ -110,7 +110,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="@color/colorSecondary"
-                android:text="Stop download" />
+                android:text="@string/stop_download" />
         </LinearLayout>
     </ScrollView>
 

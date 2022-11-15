@@ -33,8 +33,7 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
         val localDateTime = LocalDateTime.parse(playlistDataObject.lastUpdated)
         val formatter: DateTimeFormatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")
         val output: String = formatter.format(localDateTime)
-        lastUpdated.text = "Updated : $output"
-
+        lastUpdated.text = itemView.context.getString(R.string.updatedOn, output)
 
         if(playlistDataObject.thumbnail != null) {
             Picasso.get()
