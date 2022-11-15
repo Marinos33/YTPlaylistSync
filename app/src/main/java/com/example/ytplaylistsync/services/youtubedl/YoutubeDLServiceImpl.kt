@@ -3,6 +3,7 @@ package com.example.ytplaylistsync.services.youtubedl
 import android.os.Environment
 import android.util.Log
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
+import com.example.ytplaylistsync.services.preferences.PrefsManager
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
@@ -43,14 +44,21 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         request.addOption("--audio-format", "mp3")
         request.addOption("--audio-quality", "0")
         request.addOption("--add-metadata")
-        //todo add thumbnail if set in settings
-        //request.addOption("--write-thumbnail")
-        //request.addOption("--embed-thumbnail")
+        PrefsManager.getBoolean("use_thumbnail", false).let {
+            if(it){
+                request.addOption("--write-thumbnail")
+                request.addOption("--embed-thumbnail")
+            }
+        }
         request.addOption("-f", "ba")
         request.addOption("--ignore-errors")
         request.addOption("--postprocessor-args", metadata)
         request.addOption("--yes-playlist")
-        request.addOption("--download-archive", youtubeDLDir.absolutePath + "/archive.txt")
+        PrefsManager.getBoolean("use_archive", true).let {
+            if(it){
+                request.addOption("--download-archive", youtubeDLDir.absolutePath + "/archive.txt")
+            }
+        }
         request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
 
         val disposable: Disposable = Observable.fromCallable {
@@ -87,9 +95,12 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             request.addOption("--audio-format", "mp3")
             request.addOption("--audio-quality", "0")
             request.addOption("--add-metadata")
-            //todo add thumbnail if set in settings
-            //request.addOption("--write-thumbnail")
-            //request.addOption("--embed-thumbnail")
+            PrefsManager.getBoolean("use_thumbnail", false).let {
+                if(it){
+                    request.addOption("--write-thumbnail")
+                    request.addOption("--embed-thumbnail")
+                }
+            }
             request.addOption("-f", "ba")
             request.addOption("--ignore-errors")
             request.addOption("--no-playlist")

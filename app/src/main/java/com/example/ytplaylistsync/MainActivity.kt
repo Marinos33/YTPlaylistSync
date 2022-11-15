@@ -12,7 +12,9 @@ import androidx.navigation.findNavController
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
+import androidx.preference.PreferenceManager
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
+import com.example.ytplaylistsync.services.preferences.PrefsManager
 import com.example.ytplaylistsync.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -40,6 +42,8 @@ class MainActivity : AppCompatActivity() {
         setContentView(binding.root)
 
         initYoutubeDL()
+
+        PrefsManager.init(this)
 
         val navView: BottomNavigationView = binding.navView
 
