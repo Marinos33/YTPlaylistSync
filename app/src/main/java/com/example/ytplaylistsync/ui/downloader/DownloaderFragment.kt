@@ -1,6 +1,9 @@
 package com.example.ytplaylistsync.ui.downloader
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,32 +12,50 @@ import android.widget.ProgressBar
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import com.example.ytplaylistsync.R
+import com.example.ytplaylistsync.databinding.FragmentDownloaderBinding
+import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
+import com.squareup.picasso.Picasso
+import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
-
+@AndroidEntryPoint
 class DownloaderFragment : Fragment(), DownloaderContract.View {
-    // creating object of TextView class
-    private var textView: TextView? = null
-
-    // creating object of Button class
-    private var button: Button? = null
-
-    // creating object of ProgressBar class
-    private var progressBar: ProgressBar? = null
-
     // creating object of Presenter interface in Contract
     var presenter: DownloaderPresenter? = null
+
+    private var _binding: FragmentDownloaderBinding? = null
+
+    private val binding get() = _binding!!
+
+    @Inject
+    lateinit var youtubeDL: YoutubeDLService
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?): View? {
         super.onCreate(savedInstanceState)
 
-        val view = inflater.inflate(R.layout.fragment_downloader, container, false)
+        _binding = FragmentDownloaderBinding.inflate(inflater, container, false)
+        val root: View = binding.root
 
         // instantiating object of Presenter Interface
-        presenter = DownloaderPresenter(this, DownloaderModel())
+        presenter = DownloaderPresenter(this, youtubeDL, DownloaderModel())
 
-        return view
+        binding.url.addTextChangedListener(object: TextWatcher {
+            override fun beforeTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun onTextChanged(p0: CharSequence?, p1: Int, p2: Int, p3: Int) {
+
+            }
+
+            override fun afterTextChanged(p0: Editable?) {
+                presenter?.fetchInfo(p0.toString())
+            }
+        })
+
+        return root
     }
 
     override fun onResume() {
@@ -44,5 +65,14 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
     override fun onDestroy() {
         super.onDestroy()
         presenter!!.onDestroy()
+    }
+
+    override fun setVideoData(title: String, thumbnailUrl: String?) {
+        binding.videoTitle.text = title
+        if(thumbnailUrl != null) {
+            Picasso.get()
+                .load(thumbnailUrl)
+                .into(binding.thumbnail)
+        }
     }
 }

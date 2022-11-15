@@ -2,6 +2,7 @@ package com.example.ytplaylistsync.ui.downloader
 
 interface DownloaderContract {
     interface View {
+        fun setVideoData(title: String, thumbnailUrl: String?)
     }
 
     interface Model {
@@ -19,5 +20,7 @@ interface DownloaderContract {
         // method to destroy
         // lifecycle of MainActivity
         fun onDestroy()
+
+        fun fetchInfo(url: String)
     }
 }
