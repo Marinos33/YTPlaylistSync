@@ -48,7 +48,7 @@ class PlaylistsPresenter(
                         model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
 
                     launch(Dispatchers.Main) {
-                        if (result.isSuccess == true) {
+                        if (result.isSuccess) {
                             refreshPlaylists()
                             mainView?.showSuccessToast("Playlist added")
                         } else {

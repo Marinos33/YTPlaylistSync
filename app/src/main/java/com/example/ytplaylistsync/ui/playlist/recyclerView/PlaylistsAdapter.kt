@@ -16,7 +16,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, private
     // Create a copy of localityList that is not a clone
     // (so that any changes in localityList aren't reflected in this list)
     val initialPlaylistDataList = ArrayList<PlaylistEntity>().apply {
-        playlists.let { addAll(it) }
+        addAll(playlists)
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
