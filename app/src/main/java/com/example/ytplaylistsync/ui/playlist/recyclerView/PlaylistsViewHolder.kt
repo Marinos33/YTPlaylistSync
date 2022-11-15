@@ -45,7 +45,7 @@ class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : R
         downloadButton.setOnClickListener {
             Log.d("PlaylistsAdapter", "Download button clicked")
             if (!isStoragePermissionGranted()) {
-                Toast.makeText(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show()
+                Toasty.info(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
 

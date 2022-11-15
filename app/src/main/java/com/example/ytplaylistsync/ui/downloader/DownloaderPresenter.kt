@@ -18,7 +18,6 @@ class DownloaderPresenter(
         mainView = null
     }
 
-    //TODO apply this kind of coroutines to all the other presenters
     override fun fetchInfo(url: String) {
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {

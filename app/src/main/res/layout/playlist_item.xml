@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:contentDescription="@string/todo"
+        android:contentDescription="@string/thumbnailPlaylistDescription"
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_marginStart="5dp"
@@ -74,7 +74,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:background="@android:color/transparent"
-            android:contentDescription="@string/todo"
+            android:contentDescription="@string/refresh_button"
             android:scaleType="fitCenter"
             app:srcCompat="@drawable/ic_baseline_refresh_24"
             tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />

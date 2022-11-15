@@ -30,8 +30,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
 
     override fun downloadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit) {
         val youtubeDLDir = File(
-            //TODO change download directory to music directory
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
             playlist.name
         )
 

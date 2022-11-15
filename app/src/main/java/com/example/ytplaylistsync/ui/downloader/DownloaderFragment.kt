@@ -10,6 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.ProgressBar
 import android.widget.TextView
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentDownloaderBinding
@@ -98,15 +99,14 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
     }
 
     override fun showSuccessToast(message: String) {
-        Toasty.success(requireContext(), message).show()
+        Toasty.success(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
 
     override fun showErrorToast(message: String) {
-        //todo replace all Toast by Toasty
-        Toasty.error(requireContext(), message).show()
+        Toasty.error(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 
     override fun showInfoToast(message: String) {
-        Toasty.info(requireContext(), message).show()
+        Toasty.info(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }
