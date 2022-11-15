@@ -9,6 +9,11 @@ interface PlaylistsContract {
     interface View {
        fun refreshPlaylists(playlists: List<PlaylistEntity>)
 
+       fun showSuccessToast(message: String)
+
+       fun showErrorToast(message: String)
+
+       fun showInfoToast(message: String)
     }
 
     interface Model {
@@ -38,7 +43,7 @@ interface PlaylistsContract {
 
         fun refreshPlaylists()
 
-        fun addPlaylist(url: String): OnAddPlaylist
+        fun addPlaylist(url: String)
 
         fun deletePlaylist(id: Int): OnRemovePlaylist
 

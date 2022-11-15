@@ -1,6 +1,7 @@
 package com.example.ytplaylistsync.ui.playlist
 
 import android.util.Log
+import android.widget.Toast
 import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
@@ -33,27 +34,35 @@ class PlaylistsPresenter(
             }
     }
 
-    override fun addPlaylist(url: String): OnAddPlaylist {
-        val result = runBlocking {
-            var info = youtubeDL.getInfo(url)
-            if(info != null){
-                var thumbnailUrl: String? = null
+    override fun addPlaylist(url: String) {
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                var info = youtubeDL.getInfo(url)
+                if (info != null) {
+                    var thumbnailUrl: String? = null
 
-                if(info.thumbnail != null) {
-                    thumbnailUrl = info.thumbnail
-                }else if(info.thumbnails != null) {
-                    thumbnailUrl = info.thumbnails[0].url
+                    if (info.thumbnail != null) {
+                        thumbnailUrl = info.thumbnail
+                    } else if (info.thumbnails != null) {
+                        thumbnailUrl = info.thumbnails[0].url
+                    }
+
+                    var now: String = java.time.LocalDateTime.now().toString()
+
+                    var result: DbResponse =
+                        model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
+
+                    launch(Dispatchers.Main) {
+                        if (result?.isSuccess == true) {
+                            refreshPlaylists()
+                            mainView?.showSuccessToast("Playlist added")
+                        } else {
+                            mainView?.showErrorToast("An error happened while adding your playlist, reason: ${result?.message}")
+                        }
+                    }
                 }
-
-                var now: String = java.time.LocalDateTime.now().toString()
-
-                model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
-            }
-            else{
-                DbResponse("Error: Invalid playlist url", -1)
             }
         }
-        return OnAddPlaylist(result.message, result.isSuccess)
     }
 
     override fun deletePlaylist(id: Int): OnRemovePlaylist {

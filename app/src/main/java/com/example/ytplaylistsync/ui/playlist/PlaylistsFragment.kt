@@ -34,6 +34,7 @@ import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.Swipe
 import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeControllerActions
 import com.yausername.youtubedl_android.YoutubeDL
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
 import javax.inject.Inject
 
@@ -78,14 +79,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                     val isValid = URLUtil.isValidUrl(text)
 
                     if(isValid){
-                        var result = presenter?.addPlaylist(text)
-                        if(result?.isSuccess == true){
-                            presenter?.refreshPlaylists()
-                            Toast.makeText(requireContext(), "Playlist added", Toast.LENGTH_SHORT).show()
-                        }else{
-                            Toast.makeText(requireContext(),
-                                "An error happened while adding your playlist, reason: ${result?.message}", Toast.LENGTH_SHORT).show()
-                        }
+                        presenter?.addPlaylist(text)
                     }
                 }
                 negativeButton(R.string.add_dialog_negative)
@@ -176,5 +170,17 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy, presenter!!)
         binding.playlistsList.adapter?.notifyDataSetChanged()
+    }
+
+    override fun showSuccessToast(message: String) {
+        Toasty.success(requireContext(), message, Toast.LENGTH_SHORT).show()
+    }
+
+    override fun showErrorToast(message: String) {
+        Toasty.error(requireContext(), message, Toast.LENGTH_LONG).show()
+    }
+
+    override fun showInfoToast(message: String) {
+       Toasty.info(requireContext(), message, Toast.LENGTH_LONG).show()
     }
 }
