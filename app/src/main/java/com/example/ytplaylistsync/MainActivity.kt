@@ -36,7 +36,6 @@ import javax.inject.Inject
 class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
-    private val compositeDisposable = CompositeDisposable()
 
     @Inject
     lateinit var youtubeDL: YoutubeDLService

@@ -6,7 +6,6 @@
     android:id="@+id/constraintLayout"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
     android:fillViewport="true" >
 
     <ScrollView
@@ -80,7 +79,8 @@
                 android:layout_marginTop="50dp"
                 android:inputType="textUri"
                 android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColorHint="@color/textColor"
+                android:importantForAutofill="no" />
 
             <EditText
                 android:id="@+id/commands"
@@ -94,7 +94,8 @@
                 android:hint="@string/hint_command"
                 android:inputType="textMultiLine"
                 android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor" />
+                android:textColorHint="@color/textColor"
+                android:importantForAutofill="no" />
 
             <Button
                 android:id="@+id/download_button"

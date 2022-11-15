@@ -16,7 +16,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var pre
     // Create a copy of localityList that is not a clone
     // (so that any changes in localityList aren't reflected in this list)
     val initialPlaylistDataList = ArrayList<PlaylistEntity>().apply {
-        playlists?.let { addAll(it) }
+        playlists.let { addAll(it) }
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PlaylistsViewHolder {
@@ -51,7 +51,9 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var pre
             } else {
                 val query = constraint.toString().trim().lowercase(Locale.ROOT)
                 initialPlaylistDataList.forEach {
-                    if (it.name?.lowercase(Locale.ROOT)?.contains(query) == true || it.url?.lowercase(Locale.ROOT)?.contains(query) == true) {
+                    if (it.name.lowercase(Locale.ROOT).contains(query) || it.url.lowercase(Locale.ROOT)
+                            .contains(query)
+                    ) {
                         filteredList.add(it)
                     }
                 }

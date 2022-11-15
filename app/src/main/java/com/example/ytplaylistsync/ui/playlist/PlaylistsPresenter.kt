@@ -23,7 +23,7 @@ class PlaylistsPresenter(
             withContext(Dispatchers.IO) {
                val playlists = model.fetchPlaylists(this@PlaylistsPresenter)
 
-                    launch(Dispatchers.Main) {
+                launch(Dispatchers.Main) {
                         if (playlists != null) {
                             mainView?.refreshPlaylists(playlists)
                         }
@@ -51,11 +51,11 @@ class PlaylistsPresenter(
                         model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
 
                     launch(Dispatchers.Main) {
-                        if (result?.isSuccess == true) {
+                        if (result.isSuccess == true) {
                             refreshPlaylists()
                             mainView?.showSuccessToast("Playlist added")
                         } else {
-                            mainView?.showErrorToast("An error happened while adding your playlist, reason: ${result?.message}")
+                            mainView?.showErrorToast("An error happened while adding your playlist, reason: ${result.message}")
                         }
                     }
                 }
@@ -69,10 +69,10 @@ class PlaylistsPresenter(
                 var result = model.deletePlaylist(id)
 
                 launch(Dispatchers.Main) {
-                    if(result?.isSuccess == true) {
+                    if(result.isSuccess) {
                         refreshPlaylists()
                     } else {
-                        mainView?.showErrorToast("An error happened while deleting your playlist, reason: ${result?.message}")
+                        mainView?.showErrorToast("An error happened while deleting your playlist, reason: ${result.message}")
                     }
                 }
             }
