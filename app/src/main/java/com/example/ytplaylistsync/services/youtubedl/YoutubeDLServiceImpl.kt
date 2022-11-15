@@ -69,7 +69,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         compositeDisposable.add(disposable)
     }
 
-    override suspend fun getInfoPlaylist(url: String): VideoInfo? {
+    override suspend fun getInfo(url: String): VideoInfo? {
         return try{
             var request =
                 YoutubeDLRequest(url)

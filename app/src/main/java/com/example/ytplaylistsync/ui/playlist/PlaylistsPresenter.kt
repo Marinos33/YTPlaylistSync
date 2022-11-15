@@ -28,7 +28,7 @@ class PlaylistsPresenter(
 
     override fun addPlaylist(url: String): OnAddPlaylist {
         val result = runBlocking {
-            var info = youtubeDL.getInfoPlaylist(url)
+            var info = youtubeDL.getInfo(url)
             if(info != null){
                 var thumbnailUrl: String? = null
 

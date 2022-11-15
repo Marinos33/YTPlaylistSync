@@ -1,8 +1,10 @@
 package com.example.ytplaylistsync.ui.downloader
 
-import android.util.Log
+import android.os.Handler
+import android.os.Looper
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
-import kotlinx.coroutines.runBlocking
+import kotlinx.coroutines.*
+import kotlin.coroutines.suspendCoroutine
 
 class DownloaderPresenter(
     private var mainView: DownloaderContract.View?,
@@ -15,25 +17,28 @@ class DownloaderPresenter(
     }
 
     override fun fetchInfo(url: String) {
-        val result = runBlocking {
-            return@runBlocking youtubeDL.getInfoPlaylist(url)
-        }
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                val info = youtubeDL.getInfo(url)
 
-        if (result != null) {
+                if (info != null) {
 
-            var thumbnailUrl: String? = null
+                    var thumbnailUrl: String? = null
 
-            thumbnailUrl = if(result.thumbnail != null) {
-                result.thumbnail
-            } else if(result.thumbnails != null) {
-                result.thumbnails[0].url
-            } else {
-                null
+                    thumbnailUrl = if (info.thumbnail != null) {
+                        info.thumbnail
+                    } else if (info.thumbnails != null) {
+                        info.thumbnails[0].url
+                    } else {
+                        null
+                    }
+
+                    launch(Dispatchers.Main) {
+                        mainView?.setVideoData(info.title, thumbnailUrl)
+                    }
+                }
             }
-
-            mainView?.setVideoData(result.title, thumbnailUrl)
         }
-
     }
 
     override fun onFinished(string: String?) {

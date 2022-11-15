@@ -8,5 +8,5 @@ interface YoutubeDLService {
 
     fun downLoadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit)
 
-    suspend fun getInfoPlaylist(url: String): VideoInfo?
+    suspend fun getInfo(url: String): VideoInfo?
 }
