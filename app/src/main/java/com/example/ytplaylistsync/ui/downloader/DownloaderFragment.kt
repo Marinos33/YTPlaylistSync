@@ -16,6 +16,7 @@ import com.example.ytplaylistsync.databinding.FragmentDownloaderBinding
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.squareup.picasso.Picasso
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -55,6 +56,14 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
             }
         })
 
+        binding.downloadButton.setOnClickListener {
+            presenter?.downloadVideo(binding.url.text.toString(), binding.commands.text.toString())
+        }
+
+        binding.stopButton.setOnClickListener {
+            presenter?.stopDownload()
+        }
+
         return root
     }
 
@@ -74,5 +83,30 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
                 .load(thumbnailUrl)
                 .into(binding.thumbnail)
         }
+    }
+
+    override fun setProgress(progress: Int) {
+        binding.progressBar.progress = progress
+    }
+
+    override fun showProgress() {
+        binding.progressBar.visibility = ProgressBar.VISIBLE
+    }
+
+    override fun hideProgress() {
+        binding.progressBar.visibility = ProgressBar.GONE
+    }
+
+    override fun showSuccessToast(message: String) {
+        Toasty.success(requireContext(), message).show()
+    }
+
+    override fun showErrorToast(message: String) {
+        //todo replace all Toast by Toasty
+        Toasty.error(requireContext(), message).show()
+    }
+
+    override fun showInfoToast(message: String) {
+        Toasty.info(requireContext(), message).show()
     }
 }

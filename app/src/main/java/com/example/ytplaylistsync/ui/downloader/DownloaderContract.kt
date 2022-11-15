@@ -3,6 +3,18 @@ package com.example.ytplaylistsync.ui.downloader
 interface DownloaderContract {
     interface View {
         fun setVideoData(title: String, thumbnailUrl: String?)
+
+        fun setProgress(progress: Int)
+
+        fun showProgress()
+
+        fun hideProgress()
+
+        fun showSuccessToast(message: String)
+
+        fun showErrorToast(message: String)
+
+        fun showInfoToast(message: String)
     }
 
     interface Model {
@@ -22,5 +34,9 @@ interface DownloaderContract {
         fun onDestroy()
 
         fun fetchInfo(url: String)
+
+        fun downloadVideo(url: String, commands: String)
+
+        fun stopDownload()
     }
 }

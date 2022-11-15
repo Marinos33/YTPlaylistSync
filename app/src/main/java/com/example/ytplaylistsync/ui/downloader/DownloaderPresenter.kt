@@ -12,10 +12,13 @@ class DownloaderPresenter(
     private val model: DownloaderContract.Model) : DownloaderContract.Presenter,
     DownloaderContract.Model.OnFinishedListener {
 
+    private var downloading: Boolean = false
+
     override fun onDestroy() {
         mainView = null
     }
 
+    //TODO apply this kind of coroutines to all the other presenters
     override fun fetchInfo(url: String) {
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
@@ -23,9 +26,7 @@ class DownloaderPresenter(
 
                 if (info != null) {
 
-                    var thumbnailUrl: String? = null
-
-                    thumbnailUrl = if (info.thumbnail != null) {
+                    var thumbnailUrl: String? = if (info.thumbnail != null) {
                         info.thumbnail
                     } else if (info.thumbnails != null) {
                         info.thumbnails[0].url
@@ -38,6 +39,37 @@ class DownloaderPresenter(
                     }
                 }
             }
+        }
+    }
+
+    override fun downloadVideo(url: String, commands: String) {
+        if(downloading){
+            mainView?.showInfoToast("Cannot start download. a download is already in progress")
+            return
+        }
+        downloading = true
+        mainView?.showProgress()
+        youtubeDL.downloadCustom(url, commands, { progress, etaInSeconds, line ->
+            mainView?.setProgress(progress.toInt())
+        }, {
+            mainView?.showSuccessToast("Download finished successfully")
+            mainView?.hideProgress()
+            downloading = false
+        }, {
+            mainView?.showErrorToast("Download failed or partially failed")
+            mainView?.hideProgress()
+            downloading = false
+        })
+    }
+
+    override fun stopDownload() {
+        if(downloading){
+            youtubeDL.stopCustomDownload()
+            mainView?.showInfoToast("Download stopped")
+            mainView?.hideProgress()
+            downloading = false
+        } else {
+            mainView?.showInfoToast("No download in progress")
         }
     }
 

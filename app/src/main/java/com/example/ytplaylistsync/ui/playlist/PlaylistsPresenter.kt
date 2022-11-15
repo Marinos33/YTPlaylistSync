@@ -66,7 +66,7 @@ class PlaylistsPresenter(
             return@runBlocking model.loadById(id)
         }
 
-        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
             progressCallback(progress)
         }, {
             runBlocking {
@@ -88,7 +88,7 @@ class PlaylistsPresenter(
             return@runBlocking model.loadById(id)
         }
 
-        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
                 Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
             }, {
                 Log.d("YoutubeDL", "Download finished")
@@ -102,7 +102,7 @@ class PlaylistsPresenter(
             return@runBlocking model.loadById(id)
         }
 
-        youtubeDL.downLoadPlaylist(playlist, { progress, etaInSeconds, line ->
+        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
             Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
             progressCallback(progress)
         }, {
