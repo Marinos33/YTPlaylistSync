@@ -7,7 +7,7 @@ import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
 
 interface PlaylistsContract {
     interface View {
-       fun refreshPlaylists()
+       fun refreshPlaylists(playlists: List<PlaylistEntity>)
 
     }
 
@@ -36,7 +36,7 @@ interface PlaylistsContract {
         // lifecycle of MainActivity
         fun onDestroy()
 
-        fun fetchPlaylists(): List<PlaylistEntity>
+        fun refreshPlaylists()
 
         fun addPlaylist(url: String): OnAddPlaylist
 

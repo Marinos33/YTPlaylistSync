@@ -19,11 +19,18 @@ class PlaylistsPresenter(
         mainView = null
     }
 
-    override fun fetchPlaylists() : List<PlaylistEntity> {
-        val result = runBlocking {
-            model.fetchPlaylists(this@PlaylistsPresenter)
-        }
-        return result!!
+    override fun refreshPlaylists() {
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+               var playlists = model.fetchPlaylists(this@PlaylistsPresenter)
+
+                    launch(Dispatchers.Main) {
+                        if (playlists != null) {
+                            mainView?.refreshPlaylists(playlists)
+                        }
+                    }
+                }
+            }
     }
 
     override fun addPlaylist(url: String): OnAddPlaylist {
@@ -72,13 +79,13 @@ class PlaylistsPresenter(
             runBlocking {
                 model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
             }
-            mainView?.refreshPlaylists()
+            refreshPlaylists()
             onSuccess()
         }, {
             runBlocking {
                 model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
             }
-            mainView?.refreshPlaylists()
+            refreshPlaylists()
             onFailure()
         })
     }

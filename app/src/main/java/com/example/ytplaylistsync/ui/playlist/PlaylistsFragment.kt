@@ -80,7 +80,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                     if(isValid){
                         var result = presenter?.addPlaylist(text)
                         if(result?.isSuccess == true){
-                            refreshPlaylists()
+                            presenter?.refreshPlaylists()
                             Toast.makeText(requireContext(), "Playlist added", Toast.LENGTH_SHORT).show()
                         }else{
                             Toast.makeText(requireContext(),
@@ -93,7 +93,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                     val inputField = dialog.getInputField()
                     val isValid = URLUtil.isValidUrl(text.toString())
 
-                    inputField?.error = if (isValid) null else "Must be a valid url!"
+                    inputField.error = if (isValid) null else "Must be a valid url!"
                     dialog.setActionButtonEnabled(WhichButton.POSITIVE, isValid)
                 }
             }
@@ -137,20 +137,8 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         //add item decoration for divider
         val itemDecorator = DividerItemDecoration(requireContext(), DividerItemDecoration.VERTICAL)
         ContextCompat.getDrawable(requireContext(), R.drawable.line_divider)?.let { itemDecorator.setDrawable(it) }
+
         binding.playlistsList.addItemDecoration(itemDecorator)
-
-        //create a copy of city list
-        val playlists = presenter?.fetchPlaylists()
-        //val playlists = emptyList<PlaylistEntity>()
-        val playlistsCopy = ArrayList<PlaylistEntity>().apply {
-            if (playlists != null) {
-                addAll(playlists)
-            }
-        }
-
-        //attach adapter to list
-        adapter = PlaylistsAdapter(playlistsCopy, presenter!!)
-        binding.playlistsList.adapter = adapter
 
         binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
 
@@ -163,7 +151,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                 Log.d("PlaylistsModel", "playlist id: ${playlist?.id}")
                 if(playlist != null){
                     playlist.id?.let { presenter?.deletePlaylist(it) }
-                    refreshPlaylists()
+                    presenter?.refreshPlaylists()
                 }
                 Log.d("PlaylistsModel", "playlist count: ${binding.playlistsList.adapter?.itemCount}")
             }
@@ -173,18 +161,17 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         itemTouchHelper.attachToRecyclerView(binding.playlistsList)
 
         binding.swipeRefresh.setOnRefreshListener {
-            refreshPlaylists()
+            presenter?.refreshPlaylists()
 
             binding.swipeRefresh.isRefreshing = false
         }
+
+        presenter?.refreshPlaylists()
     }
 
-    override fun refreshPlaylists() {
-        val playlists = presenter?.fetchPlaylists()
+    override fun refreshPlaylists(playlists: List<PlaylistEntity>) {
         val playlistsCopy = ArrayList<PlaylistEntity>().apply {
-            if (playlists != null) {
-                addAll(playlists)
-            }
+            addAll(playlists)
         }
 
         binding.playlistsList.adapter = PlaylistsAdapter(playlistsCopy, presenter!!)
