@@ -3,16 +3,12 @@ package com.example.ytplaylistsync.ui.downloader
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
 import android.widget.ProgressBar
-import android.widget.TextView
 import android.widget.Toast
 import androidx.fragment.app.Fragment
-import com.example.ytplaylistsync.R
 import com.example.ytplaylistsync.databinding.FragmentDownloaderBinding
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.squareup.picasso.Picasso
@@ -34,7 +30,7 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
-                              savedInstanceState: Bundle?): View? {
+                              savedInstanceState: Bundle?): View {
         super.onCreate(savedInstanceState)
 
         _binding = FragmentDownloaderBinding.inflate(inflater, container, false)
@@ -66,10 +62,6 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
         }
 
         return root
-    }
-
-    override fun onResume() {
-        super.onResume()
     }
 
     override fun onDestroy() {

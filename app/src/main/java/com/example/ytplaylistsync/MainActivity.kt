@@ -8,28 +8,19 @@ import android.view.Menu
 import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
-import androidx.navigation.findNavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
-import androidx.preference.PreferenceManager
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
 import com.example.ytplaylistsync.services.preferences.PrefsManager
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
-import com.yausername.ffmpeg.FFmpeg
-import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
-import io.reactivex.Observable
-import io.reactivex.android.schedulers.AndroidSchedulers
-import io.reactivex.disposables.CompositeDisposable
-import io.reactivex.disposables.Disposable
-import io.reactivex.schedulers.Schedulers
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -75,7 +66,7 @@ class MainActivity : AppCompatActivity() {
                 startActivity(intent)
             }
         }
-        return(super.onOptionsItemSelected(item));
+        return(super.onOptionsItemSelected(item))
     }
 
     private fun initYoutubeDL() {

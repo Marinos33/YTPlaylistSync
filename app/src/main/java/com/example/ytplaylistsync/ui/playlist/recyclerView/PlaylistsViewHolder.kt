@@ -18,7 +18,7 @@ import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 
 
-class PlaylistsViewHolder(itemView: View, var presenter: PlaylistsPresenter) : RecyclerView.ViewHolder(itemView) {
+class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresenter) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.playlist_name)
     private val author: TextView = itemView.findViewById(R.id.playlist_author)
     private val lastUpdated: TextView = itemView.findViewById(R.id.playlist_last_updated)

@@ -1,10 +1,7 @@
 package com.example.ytplaylistsync.ui.downloader
 
-import android.os.Handler
-import android.os.Looper
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import kotlinx.coroutines.*
-import kotlin.coroutines.suspendCoroutine
 
 class DownloaderPresenter(
     private var mainView: DownloaderContract.View?,
@@ -25,7 +22,7 @@ class DownloaderPresenter(
 
                 if (info != null) {
 
-                    var thumbnailUrl: String? = if (info.thumbnail != null) {
+                    val thumbnailUrl: String? = if (info.thumbnail != null) {
                         info.thumbnail
                     } else if (info.thumbnails != null) {
                         info.thumbnails[0].url

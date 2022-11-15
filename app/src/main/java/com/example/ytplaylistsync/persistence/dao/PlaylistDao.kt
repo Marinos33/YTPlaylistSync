@@ -2,7 +2,6 @@ package com.example.ytplaylistsync.persistence.dao
 
 import androidx.room.*
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
-import kotlinx.coroutines.flow.Flow
 
 @Dao
 interface PlaylistDao {
@@ -15,7 +14,7 @@ interface PlaylistDao {
     @Insert(onConflict = OnConflictStrategy.ABORT)
     suspend fun insert(playlist: PlaylistEntity): Long
 
-    //update playlist lastUpdateted whre id = playlistId
+    //update playlist lastUpdated where id = playlistId
     @Query("UPDATE playlist SET playlist_last_updated = :lastUpdated WHERE id = :playlistId")
     suspend fun updatePlaylistLastUpdate(playlistId: Int, lastUpdated: String)
 

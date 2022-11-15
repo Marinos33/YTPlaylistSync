@@ -10,7 +10,7 @@ import com.example.ytplaylistsync.ui.playlist.PlaylistsPresenter
 import java.util.*
 import kotlin.collections.ArrayList
 
-class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var presenter: PlaylistsPresenter) :
+class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, private var presenter: PlaylistsPresenter) :
     RecyclerView.Adapter<PlaylistsViewHolder>() {
 
     // Create a copy of localityList that is not a clone
@@ -34,7 +34,7 @@ class PlaylistsAdapter(private var playlists: ArrayList<PlaylistEntity>, var pre
         return playlists.size
     }
 
-    //function to get teh item in the given postion
+    //function to get teh item in the given position
     fun getItem(position: Int): PlaylistEntity {
         return playlists[position]
     }

@@ -4,7 +4,6 @@ import android.content.ContentValues
 import android.content.Context
 import android.os.Environment
 import android.util.Log
-import android.widget.Toast
 import com.example.ytplaylistsync.BuildConfig
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.preferences.PrefsManager
@@ -40,7 +39,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         //format playlist author to add \\ before every space
         //val playlistAuthor = playlist.author.replace(" ", "\\ ")
 
-        var metadata = "-metadata album=${playlistName}"
+        val metadata = "-metadata album=${playlistName}"
 
         val request = YoutubeDLRequest(playlist.url)
 
@@ -111,7 +110,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
         }
         else{
-            var commandsList = commands.split(" ")
+            val commandsList = commands.split(" ")
             request.addCommands(commandsList)
             request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
         }
@@ -138,11 +137,11 @@ class YoutubeDLServiceImpl: YoutubeDLService {
 
     override suspend fun getInfo(url: String): VideoInfo? {
         return try{
-            var request =
+            val request =
                 YoutubeDLRequest(url)
             request.addOption("--flat-playlist")
             request.addOption("--dump-single-json")
-            var response = YoutubeDL.getInstance().execute(request, null, null)
+            val response = YoutubeDL.getInstance().execute(request, null, null)
 
             objectMapper.readValue(response.out, VideoInfo::class.java)
         }catch (e: Exception){
@@ -161,7 +160,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
 
     override fun init(context: Context) {
         YoutubeDL.getInstance().init(context)
-        FFmpeg.getInstance().init(context);
+        FFmpeg.getInstance().init(context)
     }
 
     override fun updateYoutubeDL(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit) {

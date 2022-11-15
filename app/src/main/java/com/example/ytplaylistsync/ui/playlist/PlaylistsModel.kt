@@ -8,7 +8,7 @@ import com.example.ytplaylistsync.persistence.repositories.PlaylistRepository
 class PlaylistsModel constructor(
     private val repository: PlaylistRepository): PlaylistsContract.Model {
 
-    override suspend fun fetchPlaylists(onFinishedListener: PlaylistsContract.Model.OnFinishedListener): List<PlaylistEntity>? {
+    override suspend fun fetchPlaylists(onFinishedListener: PlaylistsContract.Model.OnFinishedListener): List<PlaylistEntity> {
         return repository.getAll()
     }
 
@@ -21,7 +21,7 @@ class PlaylistsModel constructor(
     ): DbResponse {
         val playlist = PlaylistEntity(null, name, author, lastUpdated, url, thumbnail)
         return try{
-            var rowAffected = repository.insert(playlist)
+            val rowAffected = repository.insert(playlist)
             return DbResponse("Playlist added successfully", rowAffected)
         } catch (e: Exception) {
             Log.e("PlaylistsModel", e.message.toString())
@@ -31,9 +31,9 @@ class PlaylistsModel constructor(
 
     override suspend fun deletePlaylist(id: Int): DbResponse {
         return try{
-            var playlistEntity = repository.loadById(id)
+            val playlistEntity = repository.loadById(id)
             Log.d("PlaylistsModel", "playlist affected: $playlistEntity")
-            var rowAffected = repository.delete(playlistEntity)
+            val rowAffected = repository.delete(playlistEntity)
             Log.d("PlaylistsModel", "Row affected: $rowAffected")
             return DbResponse("Playlist removed successfully", rowAffected.toLong())
         } catch (e: Exception) {

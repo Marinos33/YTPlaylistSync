@@ -1,9 +1,6 @@
 package com.example.ytplaylistsync.ui.playlist
 
-import android.util.Log
-import android.widget.Toast
 import com.example.ytplaylistsync.common.DbResponse
-import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import kotlinx.coroutines.*
 
@@ -35,7 +32,7 @@ class PlaylistsPresenter(
     override fun addPlaylist(url: String) {
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
-                var info = youtubeDL.getInfo(url)
+                val info = youtubeDL.getInfo(url)
                 if (info != null) {
                     var thumbnailUrl: String? = null
 
@@ -45,9 +42,9 @@ class PlaylistsPresenter(
                         thumbnailUrl = info.thumbnails[0].url
                     }
 
-                    var now: String = java.time.LocalDateTime.now().toString()
+                    val now: String = java.time.LocalDateTime.now().toString()
 
-                    var result: DbResponse =
+                    val result: DbResponse =
                         model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
 
                     launch(Dispatchers.Main) {
@@ -66,7 +63,7 @@ class PlaylistsPresenter(
     override fun deletePlaylist(id: Int) {
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
-                var result = model.deletePlaylist(id)
+                val result = model.deletePlaylist(id)
 
                 launch(Dispatchers.Main) {
                     if(result.isSuccess) {
@@ -88,7 +85,7 @@ class PlaylistsPresenter(
 
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
-                var playlist = model.loadById(id)
+                val playlist = model.loadById(id)
 
                 launch(Dispatchers.Main) {
                     youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->

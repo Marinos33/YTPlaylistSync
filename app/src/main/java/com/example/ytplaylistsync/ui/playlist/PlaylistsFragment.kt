@@ -1,8 +1,6 @@
 package com.example.ytplaylistsync.ui.playlist
 
-import android.Manifest
 import android.annotation.SuppressLint
-import android.os.Build
 import android.os.Bundle
 import android.text.InputType
 import android.util.Log
@@ -13,7 +11,6 @@ import android.webkit.URLUtil
 import android.widget.Toast
 import androidx.appcompat.widget.SearchView
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.ItemTouchHelper
@@ -32,7 +29,6 @@ import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.playlist.recyclerView.PlaylistsAdapter
 import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeController
 import com.example.ytplaylistsync.ui.playlist.recyclerView.swipeController.SwipeControllerActions
-import com.yausername.youtubedl_android.YoutubeDL
 import dagger.hilt.android.AndroidEntryPoint
 import es.dmoral.toasty.Toasty
 import me.zhanghai.android.fastscroll.FastScrollerBuilder
@@ -99,10 +95,6 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         return root
     }
 
-    override fun onResume() {
-        super.onResume()
-    }
-
     override fun onDestroy() {
         super.onDestroy()
         presenter!!.onDestroy()
@@ -136,7 +128,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
         binding.playlistsList.let { FastScrollerBuilder(it).useMd2Style().build() }
 
-        var swipeController = SwipeController(requireContext(), object : SwipeControllerActions() {
+        val swipeController = SwipeController(requireContext(), object : SwipeControllerActions() {
             override fun onRightClicked(position: Int) {
                 //get the element from the list int the given position
                 //then delete it from the database and refresh the list
@@ -150,7 +142,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
             }
         })
 
-        var itemTouchHelper = ItemTouchHelper(swipeController)
+        val itemTouchHelper = ItemTouchHelper(swipeController)
         itemTouchHelper.attachToRecyclerView(binding.playlistsList)
 
         binding.swipeRefresh.setOnRefreshListener {
