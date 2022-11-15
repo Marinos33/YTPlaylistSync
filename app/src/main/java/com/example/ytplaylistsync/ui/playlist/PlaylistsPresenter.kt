@@ -5,8 +5,6 @@ import android.widget.Toast
 import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
-import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
-import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -65,11 +63,20 @@ class PlaylistsPresenter(
         }
     }
 
-    override fun deletePlaylist(id: Int): OnRemovePlaylist {
-        val result = runBlocking {
-            model.deletePlaylist(id)
+    override fun deletePlaylist(id: Int) {
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                var result = model.deletePlaylist(id)
+
+                launch(Dispatchers.Main) {
+                    if(result?.isSuccess == true) {
+                        refreshPlaylists()
+                    } else {
+                        mainView?.showErrorToast("An error happened while deleting your playlist, reason: ${result?.message}")
+                    }
+                }
+            }
         }
-        return OnRemovePlaylist(result.message, result.isSuccess)
     }
 
     override fun downloadPlaylist(
@@ -78,54 +85,26 @@ class PlaylistsPresenter(
         onFailure: () -> Unit,
         onSuccess: () -> Unit
     ) {
-        val playlist = runBlocking {
-            return@runBlocking model.loadById(id)
-        }
 
-        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
-            progressCallback(progress)
-        }, {
-            runBlocking {
+        GlobalScope.launch(Dispatchers.IO) {
+            withContext(Dispatchers.IO) {
+                var playlist = model.loadById(id)
+
+                launch(Dispatchers.Main) {
+                    youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
+                        progressCallback(progress)
+                    }, {
+                        refreshPlaylists()
+                        onSuccess()
+                    }, {
+                        refreshPlaylists()
+                        onFailure()
+                    })
+                }
+
                 model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
             }
-            refreshPlaylists()
-            onSuccess()
-        }, {
-            runBlocking {
-                model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
-            }
-            refreshPlaylists()
-            onFailure()
-        })
-    }
-
-    override fun downloadPlaylist(id: Int): Unit {
-        val playlist = runBlocking {
-            return@runBlocking model.loadById(id)
         }
-
-        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
-                Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
-            }, {
-                Log.d("YoutubeDL", "Download finished")
-            }, {
-                Log.d("YoutubeDL", "Download failed")
-            })
-    }
-
-    override fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit) {
-        val playlist = runBlocking {
-            return@runBlocking model.loadById(id)
-        }
-
-        youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
-            Log.d("YoutubeDL", "$progress% (ETA $etaInSeconds seconds)")
-            progressCallback(progress)
-        }, {
-            Log.d("YoutubeDL", "Download finished")
-        }, {
-            Log.d("YoutubeDL", "Download failed")
-        })
     }
 
 

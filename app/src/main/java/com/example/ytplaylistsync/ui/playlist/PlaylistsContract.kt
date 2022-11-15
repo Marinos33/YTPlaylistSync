@@ -2,8 +2,6 @@ package com.example.ytplaylistsync.ui.playlist
 
 import com.example.ytplaylistsync.common.DbResponse
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
-import com.example.ytplaylistsync.ui.playlist.modelResponse.OnAddPlaylist
-import com.example.ytplaylistsync.ui.playlist.modelResponse.OnRemovePlaylist
 
 interface PlaylistsContract {
     interface View {
@@ -45,12 +43,12 @@ interface PlaylistsContract {
 
         fun addPlaylist(url: String)
 
-        fun deletePlaylist(id: Int): OnRemovePlaylist
+        fun deletePlaylist(id: Int)
 
-        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit, onFailure: () -> Unit, onSuccess: () -> Unit): Unit
+        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit, onFailure: () -> Unit, onSuccess: () -> Unit)
 
-        fun downloadPlaylist(id: Int): Unit
+        /*fun downloadPlaylist(id: Int): Unit
 
-        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit): Unit
+        fun downloadPlaylist(id: Int, progressCallback: (value: Float) -> Unit): Unit*/
     }
 }

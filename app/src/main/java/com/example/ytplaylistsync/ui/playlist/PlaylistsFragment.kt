@@ -145,7 +145,6 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                 Log.d("PlaylistsModel", "playlist id: ${playlist?.id}")
                 if(playlist != null){
                     playlist.id?.let { presenter?.deletePlaylist(it) }
-                    presenter?.refreshPlaylists()
                 }
                 Log.d("PlaylistsModel", "playlist count: ${binding.playlistsList.adapter?.itemCount}")
             }
