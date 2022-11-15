@@ -15,6 +15,7 @@ import androidx.navigation.ui.setupWithNavController
 import androidx.preference.PreferenceManager
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
 import com.example.ytplaylistsync.services.preferences.PrefsManager
+import com.example.ytplaylistsync.services.youtubedl.YoutubeDLService
 import com.example.ytplaylistsync.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
@@ -22,6 +23,7 @@ import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLException
 import dagger.hilt.android.AndroidEntryPoint
+import es.dmoral.toasty.Toasty
 import io.reactivex.Observable
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
@@ -34,6 +36,9 @@ class MainActivity : AppCompatActivity() {
 
     private lateinit var binding: ActivityMainBinding
     private val compositeDisposable = CompositeDisposable()
+
+    @Inject
+    lateinit var youtubeDL: YoutubeDLService
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -75,34 +80,14 @@ class MainActivity : AppCompatActivity() {
 
     private fun initYoutubeDL() {
         try {
-            YoutubeDL.getInstance().init(this)
-            FFmpeg.getInstance().init(this);
-            updateYoutubeDL();
+            youtubeDL.init(this)
+            youtubeDL.updateYoutubeDL(application, {
+                Log.d(TAG, "YoutubeDL updated")
+            }, {
+                Toasty.error(this@MainActivity, "failed to initialize the app. Things probably wont go nicely", Toast.LENGTH_LONG).show()
+            })
         } catch (e: YoutubeDLException) {
             Log.e(TAG, "failed to initialize youtubedl-android", e)
         }
-    }
-
-    private fun updateYoutubeDL() {
-        val disposable: Disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().updateYoutubeDL(application)
-        }
-            .subscribeOn(Schedulers.newThread())
-            .observeOn(AndroidSchedulers.mainThread())
-            .subscribe({ status ->
-                Toast.makeText(
-                    this@MainActivity,
-                    "update successful",
-                    Toast.LENGTH_LONG
-                ).show()
-         }) { e ->
-                if (BuildConfig.DEBUG) Log.e(
-                    TAG,
-                    "failed to update",
-                    e
-                )
-                Toast.makeText(this@MainActivity, "update failed", Toast.LENGTH_LONG).show()
-            }
-        compositeDisposable.add(disposable)
     }
 }

@@ -1,10 +1,15 @@
 package com.example.ytplaylistsync.services.youtubedl
 
+import android.content.ContentValues
+import android.content.Context
 import android.os.Environment
 import android.util.Log
+import android.widget.Toast
+import com.example.ytplaylistsync.BuildConfig
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.example.ytplaylistsync.services.preferences.PrefsManager
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
@@ -153,5 +158,29 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         } catch (e: Exception){
             false
         }
+    }
+
+    override fun init(context: Context) {
+        YoutubeDL.getInstance().init(context)
+        FFmpeg.getInstance().init(context);
+    }
+
+    override fun updateYoutubeDL(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit) {
+        val disposable: Disposable = Observable.fromCallable {
+            YoutubeDL.getInstance().updateYoutubeDL(context)
+        }
+            .subscribeOn(Schedulers.newThread())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({ status ->
+                onSuccess()
+            }) { e ->
+                if (BuildConfig.DEBUG) Log.e(
+                    ContentValues.TAG,
+                    "failed to update",
+                    e
+                )
+                onFailure()
+            }
+        compositeDisposable.add(disposable)
     }
 }

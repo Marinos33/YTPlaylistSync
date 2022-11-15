@@ -1,5 +1,6 @@
 package com.example.ytplaylistsync.services.youtubedl
 
+import android.content.Context
 import com.example.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.mapper.VideoInfo
@@ -13,4 +14,8 @@ interface YoutubeDLService {
     suspend fun getInfo(url: String): VideoInfo?
 
     fun stopCustomDownload(): Boolean
+
+    fun init(context: Context)
+
+    fun updateYoutubeDL(context: Context, onSuccess: () -> Unit, onFailure: () -> Unit)
 }
