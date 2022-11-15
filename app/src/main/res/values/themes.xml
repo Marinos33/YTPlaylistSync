@@ -30,5 +30,13 @@
         <item name="android:textColorHint">@color/textColor</item>
     </style>
 
+    <style name="PreferenceTheme" parent="@style/Theme.YTPlaylistSync">
+        <item name="preferenceTheme">@style/PreferenceThemeOverlay</item>
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:textColorSecondary">@color/textColor</item>
+        <item name="android:textSize">16dp</item>
+    </style>
+
+
 
 </resources>

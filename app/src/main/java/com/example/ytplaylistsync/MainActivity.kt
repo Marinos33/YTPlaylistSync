@@ -1,6 +1,7 @@
 package com.example.ytplaylistsync
 
 import android.content.ContentValues.TAG
+import android.content.Intent
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -12,6 +13,7 @@ import androidx.navigation.ui.AppBarConfiguration
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.example.ytplaylistsync.databinding.ActivityMainBinding
+import com.example.ytplaylistsync.ui.settings.SettingsActivity
 import com.google.android.material.bottomnavigation.BottomNavigationView
 import com.google.android.material.navigation.NavigationBarView
 import com.yausername.ffmpeg.FFmpeg
@@ -60,8 +62,8 @@ class MainActivity : AppCompatActivity() {
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         when (item.itemId) {
             R.id.action_settings -> {
-                Toast.makeText(this, "Settings", Toast.LENGTH_SHORT).show()
-                return true
+                val intent = Intent(this, SettingsActivity::class.java)
+                startActivity(intent)
             }
         }
         return(super.onOptionsItemSelected(item));

@@ -1,0 +1,18 @@
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    >
+
+    <PreferenceCategory app:title="Download configuration">
+        <CheckBoxPreference
+            android:defaultValue="true"
+            android:key="use_archive"
+            android:title="Use archive file for playlists"
+            app:summary="It prevents video to be downloaded twice but won't re-download the deleted ones" />
+        <SwitchPreference
+            android:defaultValue="false"
+            android:key="use_thumbnail"
+            android:title="Embed thumbnail"
+            android:summary="Add the thumbnail of the video to the file. May cause unexpected errors"/>
+    </PreferenceCategory>
+
+</PreferenceScreen>
