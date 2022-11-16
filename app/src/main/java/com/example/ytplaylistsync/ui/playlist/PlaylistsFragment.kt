@@ -132,13 +132,10 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
             override fun onRightClicked(position: Int) {
                 //get the element from the list int the given position
                 //then delete it from the database and refresh the list
-                Log.d("PlaylistsModel", "playlist position: $position")
                 val playlist = (binding.playlistsList.adapter as PlaylistsAdapter?)?.getItem(position)
-                Log.d("PlaylistsModel", "playlist id: ${playlist?.id}")
                 if(playlist != null){
                     playlist.id?.let { presenter?.deletePlaylist(it) }
                 }
-                Log.d("PlaylistsModel", "playlist count: ${binding.playlistsList.adapter?.itemCount}")
             }
         })
 

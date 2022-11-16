@@ -24,7 +24,6 @@ class PlaylistsModel constructor(
             val rowAffected = repository.insert(playlist)
             return DbResponse("Playlist added successfully", rowAffected)
         } catch (e: Exception) {
-            Log.e("PlaylistsModel", e.message.toString())
             return DbResponse(e.message.toString(), -1)
         }
     }
@@ -32,12 +31,9 @@ class PlaylistsModel constructor(
     override suspend fun deletePlaylist(id: Int): DbResponse {
         return try{
             val playlistEntity = repository.loadById(id)
-            Log.d("PlaylistsModel", "playlist affected: $playlistEntity")
             val rowAffected = repository.delete(playlistEntity)
-            Log.d("PlaylistsModel", "Row affected: $rowAffected")
             return DbResponse("Playlist removed successfully", rowAffected.toLong())
         } catch (e: Exception) {
-            Log.e("PlaylistsModel", e.message.toString())
             return DbResponse(e.message.toString(), -1)
         }
     }

@@ -42,7 +42,6 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
         }
 
         downloadButton.setOnClickListener {
-            Log.d("PlaylistsAdapter", "Download button clicked")
             if (!isStoragePermissionGranted()) {
                 Toasty.info(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
@@ -52,16 +51,14 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
             progress.visibility = View.VISIBLE
 
             presenter.downloadPlaylist(playlistDataObject.id!!, { progress ->
-                Log.d("YoutubeDL", "$progress%")
+                //Log.d("YoutubeDL", "$progress%")
             },
             {
-                Log.d("YoutubeDL", "Download failed")
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
                 Toasty.error(downloadButton.context, "Something went wrong while downloading your playlist. Things may have worked out perfectly... or not", Toast.LENGTH_LONG).show()
             },
             {
-                Log.d("YoutubeDL", "Download finished")
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
                 Toasty.success(downloadButton.context, "Playlist downloaded successfully", Toast.LENGTH_LONG).show()

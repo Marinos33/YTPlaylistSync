@@ -74,10 +74,10 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ youtubeDLResponse ->
-                Log.d("YoutubeDL", youtubeDLResponse.out)
+                //Log.d("YoutubeDL", youtubeDLResponse.out)
                 onSuccess()
             }) { e ->
-                Log.d("YoutubeDL", e.message.toString())
+                //Log.d("YoutubeDL", e.message.toString())
                 onFailure()
             }
 
@@ -126,10 +126,10 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({ youtubeDLResponse ->
-                Log.d("YoutubeDL", youtubeDLResponse.out)
+                //Log.d("YoutubeDL", youtubeDLResponse.out)
                 onSuccess()
             }) { e ->
-                Log.d("YoutubeDL", e.message.toString())
+                //Log.d("YoutubeDL", e.message.toString())
                 onFailure()
             }
 

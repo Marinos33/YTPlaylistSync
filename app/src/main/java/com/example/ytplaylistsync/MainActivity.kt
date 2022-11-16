@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 Toasty.error(this@MainActivity, "failed to initialize the app. Things probably wont go nicely", Toast.LENGTH_LONG).show()
             })
         } catch (e: YoutubeDLException) {
-            Log.e(TAG, "failed to initialize youtubedl-android", e)
+            Toasty.error(this@MainActivity, "failed to initialize the app. Things probably wont go nicely", Toast.LENGTH_LONG).show()
         }
     }
 }
