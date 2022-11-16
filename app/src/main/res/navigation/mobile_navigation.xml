@@ -7,11 +7,11 @@
 
     <fragment
         android:id="@+id/navigation_playlists"
-        android:name="com.example.ytplaylistsync.ui.playlist.PlaylistsFragment"
+        android:name="com.marinos33.ytplaylistsync.ui.playlist.PlaylistsFragment"
         tools:layout="@layout/fragment_playlists" />
 
     <fragment
         android:id="@+id/navigation_downloader"
-        android:name="com.example.ytplaylistsync.ui.downloader.DownloaderFragment"
+        android:name="com.marinos33.ytplaylistsync.ui.downloader.DownloaderFragment"
         tools:layout="@layout/fragment_downloader" />
 </navigation>

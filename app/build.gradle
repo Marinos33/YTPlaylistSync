@@ -6,11 +6,11 @@ plugins {
 }
 
 android {
-    namespace 'com.example.ytplaylistsync'
+    namespace 'com.marinos33.ytplaylistsync'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.example.ytplaylistsync"
+        applicationId "com.marinos33.ytplaylistsync"
         minSdk 26
         targetSdk 33
         versionCode 1
