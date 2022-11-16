@@ -90,6 +90,14 @@ class DownloaderFragment : Fragment(), DownloaderContract.View {
         binding.progressBar.visibility = ProgressBar.GONE
     }
 
+    override fun showLoading() {
+        binding.loadingThumbnail.visibility = ProgressBar.VISIBLE
+    }
+
+    override fun hideLoading() {
+        binding.loadingThumbnail.visibility = ProgressBar.GONE
+    }
+
     override fun showSuccessToast(message: String) {
         Toasty.success(requireContext(), message, Toast.LENGTH_SHORT).show()
     }
