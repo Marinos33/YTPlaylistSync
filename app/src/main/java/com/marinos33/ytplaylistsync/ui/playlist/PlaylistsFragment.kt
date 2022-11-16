@@ -101,6 +101,9 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
 
     private fun setUpSearchView() {
         adapter = binding.playlistsList.adapter as PlaylistsAdapter?
+        var searchView: SearchView.SearchAutoComplete = binding.searchBar.findViewById(androidx.appcompat.R.id.search_src_text)
+        searchView.setHintTextColor(ContextCompat.getColor(requireContext(), R.color.black))
+        searchView.setTextColor(ContextCompat.getColor(requireContext(), R.color.black))
         binding.searchBar.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
             override fun onQueryTextSubmit(query: String?): Boolean {
                 adapter?.getFilter()?.filter(query)

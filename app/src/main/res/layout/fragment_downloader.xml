@@ -12,6 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_margin="10dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -76,11 +77,11 @@
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:hint="@string/hint_url"
-                android:layout_marginTop="50dp"
+                android:importantForAutofill="no"
                 android:inputType="textUri"
+                android:minHeight="48dp"
                 android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor"
-                android:importantForAutofill="no" />
+                android:textColorHint="@color/textColor" />
 
             <EditText
                 android:id="@+id/commands"
@@ -92,10 +93,11 @@
                 android:ems="10"
                 android:gravity="center_vertical"
                 android:hint="@string/hint_command"
+                android:importantForAutofill="no"
                 android:inputType="textMultiLine"
+                android:minHeight="48dp"
                 android:textColor="@color/textColor"
-                android:textColorHint="@color/textColor"
-                android:importantForAutofill="no" />
+                android:textColorHint="@color/textColor" />
 
             <Button
                 android:id="@+id/download_button"
