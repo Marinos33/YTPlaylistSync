@@ -28,18 +28,21 @@ class YoutubeDLServiceImpl: YoutubeDLService {
     private var customProcessId: Int = 0
 
     override fun downloadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit) {
-        val youtubeDLDir = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
-            playlist.name
-        )
-
         //format playlist name to add \\ before every space
         val playlistName = playlist.name.replace(" ", "\\ ")
+
+        //remove every non ascii character in playlistname
+        val playlistNameAscii = playlistName.replace("[^\\x00-\\x7F]".toRegex(), "")
+
+        val youtubeDLDir = File(
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+            playlist.name
+        )
 
         //format playlist author to add \\ before every space
         //val playlistAuthor = playlist.author.replace(" ", "\\ ")
 
-        val metadata = "-metadata album=${playlistName}"
+        val metadata = "-metadata album=${playlistNameAscii}"
 
         val request = YoutubeDLRequest(playlist.url)
 
@@ -47,6 +50,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         request.addOption("--audio-format", "mp3")
         request.addOption("--audio-quality", "0")
         request.addOption("--add-metadata")
+        request.addOption("--restrict-filenames")
         PrefsManager.getBoolean("use_thumbnail", false).let {
             if(it){
                 request.addOption("--write-thumbnail")
@@ -91,8 +95,6 @@ class YoutubeDLServiceImpl: YoutubeDLService {
 
         val request = YoutubeDLRequest(url)
 
-        //if commands is null to empty string
-
         if(commands == null || commands.trim() == ""){
             request.addOption("--extract-audio")
             request.addOption("--audio-format", "mp3")
@@ -112,6 +114,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         else{
             val commandsList = commands.split(" ")
             request.addCommands(commandsList)
+            request.addOption("--restrict-filenames")
             request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
         }
 
