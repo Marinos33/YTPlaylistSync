@@ -1,11 +1,15 @@
 package com.marinos33.ytplaylistsync.ui.playlist.recyclerView
 
 import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
+import android.os.Environment
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.RecyclerView
 import com.marinos33.ytplaylistsync.R
@@ -41,7 +45,7 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
         }
 
         downloadButton.setOnClickListener {
-            if (!isStoragePermissionGranted()) {
+            if (!checkPermission()) {
                 Toasty.info(downloadButton.context, "grant storage permission and retry", Toast.LENGTH_LONG).show()
                 return@setOnClickListener
             }
@@ -65,7 +69,16 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
         }
     }
 
-    private fun isStoragePermissionGranted(): Boolean {
-        return (PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.WRITE_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED && PermissionChecker.checkSelfPermission(downloadButton.context, Manifest.permission.READ_EXTERNAL_STORAGE) == PermissionChecker.PERMISSION_GRANTED)
+    private fun checkPermission(): Boolean{
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
+            //Android is 11(R) or above
+            Environment.isExternalStorageManager()
+        }
+        else{
+            //Android is below 11(R)
+            val write = ContextCompat.checkSelfPermission(downloadButton.context, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+            val read = ContextCompat.checkSelfPermission(downloadButton.context, Manifest.permission.READ_EXTERNAL_STORAGE)
+            write == PackageManager.PERMISSION_GRANTED && read == PackageManager.PERMISSION_GRANTED
+        }
     }
 }

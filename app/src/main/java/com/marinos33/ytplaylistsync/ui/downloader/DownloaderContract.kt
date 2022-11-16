@@ -10,6 +10,10 @@ interface DownloaderContract {
 
         fun hideProgress()
 
+        fun showLoading()
+
+        fun hideLoading()
+
         fun showSuccessToast(message: String)
 
         fun showErrorToast(message: String)

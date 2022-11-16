@@ -16,6 +16,7 @@ class DownloaderPresenter(
     }
 
     override fun fetchInfo(url: String) {
+        mainView?.showLoading()
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
                 val info = youtubeDL.getInfo(url)
@@ -31,6 +32,7 @@ class DownloaderPresenter(
                     }
 
                     launch(Dispatchers.Main) {
+                        mainView?.hideLoading()
                         mainView?.setVideoData(info.title, thumbnailUrl)
                     }
                 }
