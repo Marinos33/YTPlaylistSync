@@ -9,6 +9,7 @@
             android:defaultValue="true"
             android:key="use_archive"
             android:title="Use archive file for playlists"
+
             app:allowDividerAbove="true"
             app:allowDividerBelow="true"
             app:icon="@drawable/ic_baseline_archive_24"

@@ -2,6 +2,7 @@ package com.marinos33.ytplaylistsync
 
 import android.content.ContentValues.TAG
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import android.util.Log
 import android.view.Menu
@@ -40,6 +41,10 @@ class MainActivity : AppCompatActivity() {
         initYoutubeDL()
 
         PrefsManager.init(this)
+
+        val actionBar = supportActionBar
+        val color = ColorDrawable(resources.getColor(R.color.colorPrimary))
+        actionBar?.setBackgroundDrawable(color)
 
         val navView: BottomNavigationView = binding.navView
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.nav_host_fragment_activity_main) as NavHostFragment
