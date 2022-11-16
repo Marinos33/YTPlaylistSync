@@ -35,7 +35,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         val playlistNameAscii = playlistName.replace("[^\\x00-\\x7F]".toRegex(), "")
 
         val youtubeDLDir = File(
-                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS),
+                Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_MUSIC),
             playlist.name
         )
 
