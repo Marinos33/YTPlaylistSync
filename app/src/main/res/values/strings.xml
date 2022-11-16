@@ -1,0 +1,21 @@
+<resources>
+    <string name="app_name">YTPlaylistSync</string>
+    <string name="Settings">Settings</string>
+    <string name="Playlists">Playlists</string>
+    <string name="Downloader">Downloader</string>
+    <string name="add_dialog_title">Add a playlist</string>
+    <string name="add_dialog_hint">Enter a playlist\'s URL</string>
+    <string name="add_dialog_positive">Add</string>
+    <string name="add_dialog_negative">Cancel</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="todo">TODO</string>
+    <string name="thumbnailPlaylistDescription">Thumbnail of the playlist</string>
+    <string name="thumbnailDescription">Thumbnail of the video</string>
+    <string name="add_button">Add playlist button</string>
+    <string name="refresh_button">Refresh button</string>
+    <string name="hint_url">Enter url</string>
+    <string name="hint_command">Enter a command</string>
+    <string name="start_download">Start download</string>
+    <string name="stop_download">Stop download</string>
+    <string name="updatedOn">Updated : %1$s</string>
+</resources>
