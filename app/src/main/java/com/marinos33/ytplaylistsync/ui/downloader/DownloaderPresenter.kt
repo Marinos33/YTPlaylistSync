@@ -47,10 +47,16 @@ class DownloaderPresenter(
     }
 
     override fun downloadVideo(url: String, commands: String) {
+        if (url.isEmpty() || !URLUtil.isValidUrl(url)) {
+            mainView?.showInfoToast("Url empty or not valid")
+            return
+        }
+
         if(downloading){
             mainView?.showInfoToast("Cannot start download. a download is already in progress")
             return
         }
+        
         downloading = true
         mainView?.showProgress()
         youtubeDL.downloadCustom(url, commands, { progress, etaInSeconds, line ->
