@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/onBackground"
+    android:layout_marginStart="8dp"
     android:orientation="horizontal">
 
     <ImageView
@@ -16,6 +17,7 @@
         android:adjustViewBounds="true"
         android:scaleType="fitCenter"
         android:layout_marginStart="5dp"
+        android:padding="5dp"
         android:background="@android:color/transparent"
         app:srcCompat="@drawable/ic_baseline_music_note_24" />
 
@@ -65,6 +67,7 @@
             android:layout_width="match_parent"
             android:indeterminate="true"
             android:visibility="gone"
+            android:padding="10dp"
             android:progressDrawable="@drawable/circle_shape"
             android:indeterminateTint="@color/white"
             android:layout_height="match_parent" />
@@ -76,6 +79,7 @@
             android:background="@android:color/transparent"
             android:contentDescription="@string/refresh_button"
             android:scaleType="fitCenter"
+            android:padding="10dp"
             app:srcCompat="@drawable/ic_baseline_refresh_24"
             tools:ignore="DuplicateSpeakableTextCheck,ImageContrastCheck" />
     </FrameLayout>
