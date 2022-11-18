@@ -1,6 +1,7 @@
 package com.marinos33.ytplaylistsync.ui.settings
 
 import android.content.Intent
+import android.graphics.drawable.ColorDrawable
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.preference.PreferenceFragmentCompat
@@ -18,6 +19,11 @@ class SettingsActivity : AppCompatActivity() {
                 .replace(R.id.settings, SettingsFragment())
                 .commit()
         }
+
+        val actionBar = supportActionBar
+        val color = ColorDrawable(resources.getColor(R.color.colorPrimary, null))
+        actionBar?.setBackgroundDrawable(color)
+
         supportActionBar?.setDisplayHomeAsUpEnabled(true)
     }
 

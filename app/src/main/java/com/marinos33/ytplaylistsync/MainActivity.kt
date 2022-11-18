@@ -53,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         PrefsManager.init(this)
 
         val actionBar = supportActionBar
-        val color = ColorDrawable(resources.getColor(R.color.colorPrimary))
+        val color = ColorDrawable(resources.getColor(R.color.colorPrimary, null))
         actionBar?.setBackgroundDrawable(color)
 
         val navView: BottomNavigationView = binding.navView

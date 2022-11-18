@@ -56,7 +56,7 @@ class DownloaderPresenter(
             mainView?.showInfoToast("Cannot start download. a download is already in progress")
             return
         }
-        
+
         downloading = true
         mainView?.showProgress()
         youtubeDL.downloadCustom(url, commands, { progress, etaInSeconds, line ->
