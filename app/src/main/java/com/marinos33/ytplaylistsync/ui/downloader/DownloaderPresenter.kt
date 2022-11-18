@@ -1,5 +1,6 @@
 package com.marinos33.ytplaylistsync.ui.downloader
 
+import android.webkit.URLUtil
 import com.marinos33.ytplaylistsync.services.youtubedl.YoutubeDLService
 import kotlinx.coroutines.*
 
@@ -16,6 +17,11 @@ class DownloaderPresenter(
     }
 
     override fun fetchInfo(url: String) {
+        //if url is empty or not a valid url
+        if (url.isEmpty() || !URLUtil.isValidUrl(url)) {
+            return
+        }
+
         mainView?.showLoading()
         GlobalScope.launch(Dispatchers.IO) {
             withContext(Dispatchers.IO) {
