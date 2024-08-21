@@ -3,7 +3,7 @@
 [![Download YTPlaylistSync](https://a.fsdn.com/con/app/sf-download-button)](https://sourceforge.net/projects/ytplaylistsync/files/latest/download)
 
 We are all listening to music at some points. You are probably using Spotify, Youtube premium or other known app to listen your favorite songs.
-But what if you could use a open-source application which doesn't require any account or personal information and can also save you from using your precious mobile data.
+But what if you could use an open-source application which doesn't require any account or personal information and can also save you from using your precious mobile data.
 
 
 ## Usage
