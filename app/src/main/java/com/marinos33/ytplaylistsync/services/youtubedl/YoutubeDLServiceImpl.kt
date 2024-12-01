@@ -8,6 +8,7 @@ import com.marinos33.ytplaylistsync.BuildConfig
 import com.marinos33.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.marinos33.ytplaylistsync.services.preferences.PrefsManager
 import com.fasterxml.jackson.databind.ObjectMapper
+import com.google.gson.Gson
 import com.yausername.ffmpeg.FFmpeg
 import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
@@ -27,7 +28,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
     private val processId = (0..100000).random()
     private var customProcessId: Int = 0
 
-    override fun downloadPlaylist(playlist: PlaylistEntity, callback: DownloadProgressCallback, onSuccess: () -> Unit, onFailure: () -> Unit) {
+    override fun downloadPlaylist(playlist: PlaylistEntity, callback: (Float, Long, String?) -> Unit, onSuccess: () -> Unit, onFailure: () -> Unit) {
         //format playlist name to add \\ before every space
         val playlistName = playlist.name.replace(" ", "\\ ")
 
@@ -69,7 +70,12 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         request.addOption("-o", youtubeDLDir.absolutePath + "/%(title)s - %(uploader)s.%(ext)s")
 
         val disposable: Disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().execute(request, processId.toString(), callback)
+            // Execute the request with a properly passed DownloadProgressCallback
+            YoutubeDL.getInstance().execute(
+                request, processId.toString()
+            ) { progress, etaInSeconds, line ->  // Inline the callback here
+                callback(progress, etaInSeconds, line)  // Invoke the function callback
+            }
         }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -121,7 +127,9 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         customProcessId = (0..100000).random()
 
         val disposable: Disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().execute(request, customProcessId.toString(), callback)
+            YoutubeDL.getInstance().execute(request, customProcessId.toString(),
+                callback as ((Float, Long, String) -> Unit)?
+            )
         }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())

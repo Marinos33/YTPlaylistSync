@@ -2,6 +2,7 @@ package com.marinos33.ytplaylistsync.ui.downloader
 
 import android.webkit.URLUtil
 import com.marinos33.ytplaylistsync.services.youtubedl.YoutubeDLService
+import com.yausername.youtubedl_android.DownloadProgressCallback
 import kotlinx.coroutines.*
 
 class DownloaderPresenter(
@@ -32,14 +33,14 @@ class DownloaderPresenter(
                     val thumbnailUrl: String? = if (info.thumbnail != null) {
                         info.thumbnail
                     } else if (info.thumbnails != null) {
-                        info.thumbnails[0].url
+                        info.thumbnails!![0].url
                     } else {
                         null
                     }
 
                     launch(Dispatchers.Main) {
                         mainView?.hideLoading()
-                        mainView?.setVideoData(info.title, thumbnailUrl)
+                        mainView?.setVideoData(info.title.toString(), thumbnailUrl)
                     }
                 }
             }
@@ -59,9 +60,14 @@ class DownloaderPresenter(
 
         downloading = true
         mainView?.showProgress()
-        youtubeDL.downloadCustom(url, commands, { progress, etaInSeconds, line ->
-            mainView?.setProgress(progress.toInt())
-        }, {
+
+        val callback = object : DownloadProgressCallback {
+            override fun onProgressUpdate(progress: Float, etaInSeconds: Long, line: String?) {
+                mainView?.setProgress(progress.toInt())
+            }
+        }
+
+        youtubeDL.downloadCustom(url, commands, callback, {
             mainView?.showSuccessToast("Download finished successfully")
             mainView?.hideProgress()
             downloading = false

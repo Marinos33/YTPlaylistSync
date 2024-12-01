@@ -1,16 +1,17 @@
 package com.marinos33.ytplaylistsync.ui.playlist.recyclerView
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Environment
+import android.util.Log
 import android.view.View
 import android.widget.ImageView
 import android.widget.ProgressBar
 import android.widget.TextView
 import android.widget.Toast
 import androidx.core.content.ContextCompat
-import androidx.core.content.PermissionChecker
 import androidx.recyclerview.widget.RecyclerView
 import com.marinos33.ytplaylistsync.R
 import com.marinos33.ytplaylistsync.persistence.entities.PlaylistEntity
@@ -19,7 +20,6 @@ import com.squareup.picasso.Picasso
 import es.dmoral.toasty.Toasty
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
-
 
 class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresenter) : RecyclerView.ViewHolder(itemView) {
     private val name: TextView = itemView.findViewById(R.id.playlist_name)
@@ -59,6 +59,8 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
             {
                 progress.visibility = View.GONE
                 downloadButton.visibility = View.VISIBLE
+                //log error
+                //Log.e("YoutubeDL", it.toString())
                 Toasty.error(downloadButton.context, "Something went wrong while downloading your playlist. Things may have worked out perfectly... or not", Toast.LENGTH_LONG).show()
             },
             {
@@ -69,6 +71,7 @@ class PlaylistsViewHolder(itemView: View, private var presenter: PlaylistsPresen
         }
     }
 
+    @SuppressLint("ObsoleteSdkInt")
     private fun checkPermission(): Boolean{
         return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R){
             //Android is 11(R) or above
