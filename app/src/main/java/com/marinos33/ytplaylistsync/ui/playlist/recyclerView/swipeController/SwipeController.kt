@@ -207,7 +207,7 @@ class SwipeController(var context: Context, private var buttonsActions: SwipeCon
         )
         p.color = Color.RED
         c.drawRoundRect(rightButton, corners, corners, p)
-        val d = context.resources.getDrawable(R.drawable.ic_baseline_delete_24)
+        val d = context.resources.getDrawable(R.drawable.ic_baseline_delete_24, null)
         val icDelete = Bitmap.createScaledBitmap(drawableToBitmap(d)!!, d.intrinsicWidth * 2, d.intrinsicHeight * 2, true)
         drawIcon(icDelete, c, rightButton, p)
         buttonInstance = null

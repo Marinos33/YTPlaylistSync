@@ -99,6 +99,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         presenter!!.onDestroy()
     }
 
+    @SuppressLint("RestrictedApi")
     private fun setUpSearchView() {
         adapter = binding.playlistsList.adapter as PlaylistsAdapter?
         var searchView: SearchView.SearchAutoComplete = binding.searchBar.findViewById(androidx.appcompat.R.id.search_src_text)
@@ -135,9 +136,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
                 //get the element from the list int the given position
                 //then delete it from the database and refresh the list
                 val playlist = (binding.playlistsList.adapter as PlaylistsAdapter?)?.getItem(position)
-                if(playlist != null){
-                    playlist.id?.let { presenter?.deletePlaylist(it) }
-                }
+                playlist?.id?.let { presenter?.deletePlaylist(it) }
             }
         })
 
@@ -153,6 +152,7 @@ class PlaylistsFragment : Fragment(), PlaylistsContract.View {
         presenter?.refreshPlaylists()
     }
 
+    @SuppressLint("NotifyDataSetChanged")
     override fun refreshPlaylists(playlists: List<PlaylistEntity>) {
         val playlistsCopy = ArrayList<PlaylistEntity>().apply {
             addAll(playlists)

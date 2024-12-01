@@ -2,6 +2,7 @@ package com.marinos33.ytplaylistsync.ui.playlist
 
 import com.marinos33.ytplaylistsync.common.DbResponse
 import com.marinos33.ytplaylistsync.services.youtubedl.YoutubeDLService
+import io.sentry.Sentry
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -39,13 +40,14 @@ class PlaylistsPresenter(
                     if (info.thumbnail != null) {
                         thumbnailUrl = info.thumbnail
                     } else if (info.thumbnails != null) {
-                        thumbnailUrl = info.thumbnails[0].url
+                        thumbnailUrl = info.thumbnails!![0].url
                     }
 
                     val now: String = java.time.LocalDateTime.now().toString()
 
                     val result: DbResponse =
-                        model.addPlaylist(info.title, info.uploader, now, url, thumbnailUrl)
+                        model.addPlaylist(info.title.toString(),
+                            info.uploader.toString(), now, url, thumbnailUrl)
 
                     launch(Dispatchers.Main) {
                         if (result.isSuccess) {
@@ -82,24 +84,41 @@ class PlaylistsPresenter(
         onFailure: () -> Unit,
         onSuccess: () -> Unit
     ) {
-
         GlobalScope.launch(Dispatchers.IO) {
-            withContext(Dispatchers.IO) {
+            try {
+                // Fetch playlist data from the model
                 val playlist = model.loadById(id)
 
-                launch(Dispatchers.Main) {
-                    youtubeDL.downloadPlaylist(playlist, { progress, etaInSeconds, line ->
-                        progressCallback(progress)
-                    }, {
-                        refreshPlaylists()
-                        onSuccess()
-                    }, {
-                        refreshPlaylists()
-                        onFailure()
-                    })
+                // Call the download function on the main thread
+                withContext(Dispatchers.Main) {
+                    // Ensure that you are passing the correct progress callback
+                    youtubeDL.downloadPlaylist(
+                        playlist,
+                        { progress, etaInSeconds, line ->  // This is a lambda matching (Float, Long, String?) -> Unit
+                            // Pass progress update to the callback
+                            progressCallback(progress)  // Use the passed callback for progress updates
+                        },
+                        {
+                            // Success case: refresh playlist and call onSuccess
+                            refreshPlaylists()
+                            onSuccess()
+                        },
+                        {
+                            // Failure case: refresh playlist and call onFailure
+                            refreshPlaylists()
+                            onFailure()
+                        }
+                    )
                 }
 
+                // Update the last updated timestamp for the playlist
                 model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
+            } catch (e: Exception) {
+                // Handle any unexpected errors
+                Sentry.captureException(e)
+                withContext(Dispatchers.Main) {
+                    onFailure()  // Call failure handler
+                }
             }
         }
     }
