@@ -1,9 +1,8 @@
 package com.marinos33.ytplaylistsync.ui.playlist
 
-import android.util.Log
 import com.marinos33.ytplaylistsync.common.DbResponse
 import com.marinos33.ytplaylistsync.services.youtubedl.YoutubeDLService
-import com.yausername.youtubedl_android.DownloadProgressCallback
+import io.sentry.Sentry
 import kotlinx.coroutines.*
 
 class PlaylistsPresenter(
@@ -116,6 +115,7 @@ class PlaylistsPresenter(
                 model.updatePlaylistLastUpdate(id, java.time.LocalDateTime.now().toString())
             } catch (e: Exception) {
                 // Handle any unexpected errors
+                Sentry.captureException(e)
                 withContext(Dispatchers.Main) {
                     onFailure()  // Call failure handler
                 }

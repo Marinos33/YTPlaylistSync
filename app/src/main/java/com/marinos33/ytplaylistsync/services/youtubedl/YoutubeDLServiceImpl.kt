@@ -10,7 +10,6 @@ import com.marinos33.ytplaylistsync.services.preferences.PrefsManager
 import com.fasterxml.jackson.databind.ObjectMapper
 import com.google.gson.Gson
 import com.yausername.ffmpeg.FFmpeg
-import com.yausername.youtubedl_android.DownloadProgressCallback
 import com.yausername.youtubedl_android.YoutubeDL
 import com.yausername.youtubedl_android.YoutubeDLRequest
 import com.yausername.youtubedl_android.mapper.VideoInfo
@@ -19,6 +18,7 @@ import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.disposables.Disposable
 import io.reactivex.schedulers.Schedulers
+import io.sentry.Sentry
 import java.io.File
 
 class YoutubeDLServiceImpl: YoutubeDLService {
@@ -60,6 +60,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         }
         request.addOption("-f", "ba")
         request.addOption("--ignore-errors")
+        request.addOption("--no-abort-on-error")
         request.addOption("--postprocessor-args", metadata)
         request.addOption("--yes-playlist")
         PrefsManager.getBoolean("use_archive", true).let {
@@ -83,6 +84,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
                 //Log.d("YoutubeDL", youtubeDLResponse.out)
                 onSuccess()
             }) { e ->
+                Sentry.captureMessage("The following error happened: ${e.message} with request: ${Gson().toJson(request)}")
                 //Log.d("YoutubeDL", e.message.toString())
                 onFailure()
             }
@@ -93,7 +95,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
     override fun downloadCustom(
         url: String,
         commands: String?,
-        callback: DownloadProgressCallback,
+        callback: (Float, Long, String?) -> Unit,
         onSuccess: () -> Unit,
         onFailure: () -> Unit
     ) {
@@ -127,9 +129,11 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         customProcessId = (0..100000).random()
 
         val disposable: Disposable = Observable.fromCallable {
-            YoutubeDL.getInstance().execute(request, customProcessId.toString(),
-                callback as ((Float, Long, String) -> Unit)?
-            )
+            YoutubeDL.getInstance().execute(
+                request, processId.toString()
+            ) { progress, etaInSeconds, line ->  // Inline the callback here
+                callback(progress, etaInSeconds, line)  // Invoke the function callback
+            }
         }
             .subscribeOn(Schedulers.newThread())
             .observeOn(AndroidSchedulers.mainThread())
@@ -144,8 +148,6 @@ class YoutubeDLServiceImpl: YoutubeDLService {
         compositeDisposable.add(disposable)
     }
 
-
-
     override suspend fun getInfo(url: String): VideoInfo? {
         return try{
             val request =
@@ -156,6 +158,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
 
             objectMapper.readValue(response.out, VideoInfo::class.java)
         }catch (e: Exception){
+            Sentry.captureException(e)
             null
         }
     }
@@ -165,6 +168,7 @@ class YoutubeDLServiceImpl: YoutubeDLService {
             YoutubeDL.getInstance().destroyProcessById(customProcessId.toString())
             true
         } catch (e: Exception){
+            Sentry.captureException(e)
             false
         }
     }

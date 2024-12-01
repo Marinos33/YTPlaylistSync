@@ -4,7 +4,7 @@ import com.marinos33.ytplaylistsync.common.DbResponse
 import com.marinos33.ytplaylistsync.persistence.entities.PlaylistEntity
 import com.marinos33.ytplaylistsync.persistence.repositories.PlaylistRepository
 
-class PlaylistsModel constructor(
+class PlaylistsModel(
     private val repository: PlaylistRepository): PlaylistsContract.Model {
 
     override suspend fun fetchPlaylists(onFinishedListener: PlaylistsContract.Model.OnFinishedListener): List<PlaylistEntity> {
